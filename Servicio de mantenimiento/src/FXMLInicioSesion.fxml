@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="651.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="FXMLInicioSesionController">
+   <children>
+      <Pane prefHeight="651.0" prefWidth="600.0">
+         <children>
+            <ImageView fitHeight="136.0" fitWidth="191.0" layoutX="215.0" layoutY="35.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@Iconos/ImagenInicioSesionProcesos.png" />
+               </image>
+            </ImageView>
+            <TextField fx:id="tfUsuario" layoutX="48.0" layoutY="332.0" prefHeight="31.0" prefWidth="491.0" promptText="Ej. usuario" />
+            <Label layoutX="171.0" layoutY="232.0" text="INGRESE SU USUARIO Y CONTRASEÑA" />
+            <Label layoutX="39.0" layoutY="186.0" text="Gestión de mantenimiento de equipos de cómputo" textFill="#216db0">
+               <font>
+                  <Font name="Franklin Gothic Demi" size="24.0" />
+               </font>
+            </Label>
+            <Label layoutX="48.0" layoutY="289.0" text="Usuario" textFill="#0000007e">
+               <font>
+                  <Font name="Franklin Gothic Book" size="23.0" />
+               </font>
+            </Label>
+            <Label layoutX="48.0" layoutY="403.0" text="Contraseña" textFill="#0000007e">
+               <font>
+                  <Font name="Franklin Gothic Book" size="23.0" />
+               </font>
+            </Label>
+            <PasswordField fx:id="pfContrasenia" layoutX="48.0" layoutY="445.0" prefHeight="31.0" prefWidth="491.0" promptText="******" />
+            <Button layoutX="231.0" layoutY="533.0" mnemonicParsing="false" onAction="#iniciarSesion" style="-fx-background-color: #00AB4F;" text="INICIAR SESIÓN" textFill="WHITE">
+            </Button>
+            <Label fx:id="lbErrorUsuario" layoutX="50.0" layoutY="364.0" textFill="RED" />
+            <Label fx:id="lbErrorContrasenia" layoutX="50.0" layoutY="476.0" textFill="RED" />
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>
