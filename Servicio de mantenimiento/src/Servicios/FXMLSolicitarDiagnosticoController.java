@@ -78,6 +78,7 @@ public class FXMLSolicitarDiagnosticoController implements Initializable {
             listaClientes = FXCollections.observableArrayList();
             ArrayList<Cliente> recursoBD = ClienteDAO.obtenerClientes();
             listaClientes.addAll(recursoBD);
+            System.out.println(listaClientes);
             tvClientes.setItems(listaClientes);
         }catch(SQLException | NullPointerException e){
             e.printStackTrace();

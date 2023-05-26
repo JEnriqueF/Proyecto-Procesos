@@ -15,14 +15,19 @@ public class ClienteDAO {
     public static ArrayList<Cliente> obtenerClientes() throws SQLException{
         ArrayList<Cliente> usuariosBD = null;
         Connection conexionBD = ConexionBaseDatos.abrirConexionBaseDatos();
+        System.out.println(conexionBD);
         
         if(conexionBD != null){
             try{
-                String consulta = "SELECT nombre, numTelefono, correo FROM Cliente";
+                String consulta = "SELECT nombre, numTelefono, correo FROM mantenimientoprocesos.cliente";
                 
+                System.out.println(consulta);
                 PreparedStatement consultaUsuario = conexionBD.prepareStatement(consulta);
+                System.out.println("consultaUsuario: "+consultaUsuario);
                 ResultSet resultadoConsulta = consultaUsuario.executeQuery();
+                System.out.println("resultadoConsulta: "+resultadoConsulta);
                 usuariosBD = new ArrayList<>();
+                System.out.println("UsuariosBD: "+usuariosBD);
                 
                 while(resultadoConsulta.next()){
                     Cliente temp = new Cliente();
@@ -30,6 +35,7 @@ public class ClienteDAO {
                     temp.setNumTelefono(resultadoConsulta.getString("numTelefono"));
                     temp.setCorreo(resultadoConsulta.getString("correo"));
                     usuariosBD.add(temp);
+                    System.out.println("Temp: "+temp);
                 }
             }catch(SQLException e){
                 e.printStackTrace();

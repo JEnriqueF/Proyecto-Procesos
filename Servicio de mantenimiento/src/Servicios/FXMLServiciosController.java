@@ -11,10 +11,15 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class FXMLServiciosController implements Initializable {
+
+    @FXML
+    private Button btnSolicitarDiagnostico;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
@@ -24,12 +29,12 @@ public class FXMLServiciosController implements Initializable {
     private void clicSolicitarDiagnostico(ActionEvent event) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("FXMLSolicitarDiagnostico.fxml"));
-            Parent ventanaBuscarRecurso = fxmlLoader.load();
-            Scene escenarioBuscarRecurso = new Scene(ventanaBuscarRecurso);
-            Stage nuevoEscenarioRegistrarRecursoDaniado = new Stage();
-            nuevoEscenarioRegistrarRecursoDaniado.setScene(escenarioBuscarRecurso);
-            nuevoEscenarioRegistrarRecursoDaniado.initModality(Modality.APPLICATION_MODAL);
-            nuevoEscenarioRegistrarRecursoDaniado.showAndWait();
+            Parent ventanaSolicitarDiagnostico = fxmlLoader.load();
+            Scene escenarioSolicitarDiagnostico = new Scene(ventanaSolicitarDiagnostico);
+            Stage nuevoEscenarioSolicitarDiagnostico = new Stage();
+            nuevoEscenarioSolicitarDiagnostico.setScene(escenarioSolicitarDiagnostico);
+            nuevoEscenarioSolicitarDiagnostico.initModality(Modality.APPLICATION_MODAL);
+            nuevoEscenarioSolicitarDiagnostico.showAndWait();
         } catch (IOException ex) {
             Logger.getLogger(FXMLServiciosController.class.getName()).log(Level.SEVERE, null, ex);
         }
