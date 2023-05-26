@@ -4,7 +4,7 @@ USE `mantenimientoprocesos`;
 --
 -- Host: 127.0.0.1    Database: mantenimientoprocesos
 -- ------------------------------------------------------
--- Server version	8.0.31
+-- Server version	8.0.28
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -105,6 +105,7 @@ CREATE TABLE `refaccion` (
   `nombreRefaccion` varchar(45) NOT NULL,
   `precioCosto` double NOT NULL,
   `unidades` int NOT NULL,
+  `proveedor` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`idRefaccion`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -115,7 +116,7 @@ CREATE TABLE `refaccion` (
 
 LOCK TABLES `refaccion` WRITE;
 /*!40000 ALTER TABLE `refaccion` DISABLE KEYS */;
-INSERT INTO `refaccion` VALUES (1,'RAM 8GB 3200MHz',800,34),(2,'CPU AMD Ryzen 3 3200G',2000,30),(3,'CPU Intel I5 11400',5399,10),(4,'Motherboard B650 Aorus Pro',8099,20),(5,'Grafica Nvidia Geforce GTX 1660',6099,18),(6,'Grafica Gigabyte AMD Radeon RX 6800',21499,2);
+INSERT INTO `refaccion` VALUES (1,'RAM 8GB 3200MHz',800,34,NULL),(2,'CPU AMD Ryzen 3 3200G',2000,30,NULL),(3,'CPU Intel I5 11400',5399,10,NULL),(4,'Motherboard B650 Aorus Pro',8099,20,NULL),(5,'Grafica Nvidia Geforce GTX 1660',6099,18,NULL),(6,'Grafica Gigabyte AMD Radeon RX 6800',21499,2,NULL);
 /*!40000 ALTER TABLE `refaccion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -239,4 +240,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-05-19 17:36:55
+-- Dump completed on 2023-05-26 13:03:13
