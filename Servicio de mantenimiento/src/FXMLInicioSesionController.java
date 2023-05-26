@@ -72,11 +72,11 @@ public class FXMLInicioSesionController implements Initializable {
     }
     
     private void irMenuPrincipal(int tipoUsuario){
-        try {
+        try{
             FXMLLoader accesoControlador = new FXMLLoader(getClass().getResource("FXMLMenuPrincipal.fxml"));
             Parent vista = accesoControlador.load();
-            /*FXMLMenuPrincipalController ventana = accesoControlador.getController();
-            ventana.inicializarTipoUsuario(tipoUsuario);*/
+            FXMLMenuPrincipalController ventana = accesoControlador.getController();
+            ventana.inicializarTipoUsuario(tipoUsuario);
             Scene escenaPrincipal = new Scene(vista);
             Stage escenarioBase = (Stage) tfUsuario.getScene().getWindow();
             escenarioBase.setScene(escenaPrincipal);

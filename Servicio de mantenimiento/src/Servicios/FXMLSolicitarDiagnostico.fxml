@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="858.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="Servicios.FXMLSolicitarDiagnosticoController">
+   <children>
+      <Pane prefHeight="67.0" prefWidth="792.0" style="-fx-background-color: #00519E;">
+         <children>
+            <Label fx:id="lbMenuPrincipal" layoutX="216.0" layoutY="7.0" prefHeight="54.0" prefWidth="360.0" text="Registrar diagnóstico" textFill="WHITE">
+               <font>
+                  <Font size="37.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <TextField fx:id="tfBuscarCliente" layoutX="242.0" layoutY="85.0" prefHeight="31.0" prefWidth="308.0" promptText="Introduzca nombre del cliente" />
+      <TableView fx:id="tvClientes" layoutX="64.0" layoutY="142.0" prefHeight="200.0" prefWidth="664.0">
+        <columns>
+          <TableColumn fx:id="tcNombre" prefWidth="242.0" text="Nombre" />
+          <TableColumn fx:id="tcNumTelefono" prefWidth="161.0" text="Número de teléfono" />
+            <TableColumn fx:id="tcCorreo" minWidth="4.0" prefWidth="260.0" text="Correo electrónico" />
+        </columns>
+      </TableView>
+      <Button layoutX="336.0" layoutY="354.0" mnemonicParsing="false" onAction="#clicAgregarCliente" style="-fx-background-color: #30FF24;" text="Agregar cliente" />
+      <TextArea fx:id="taDescripcionDiagnostico" layoutX="64.0" layoutY="429.0" prefHeight="102.0" prefWidth="664.0" />
+      <Label layoutX="64.0" layoutY="408.0" text="Descripción del diagnóstico" />
+      <Label layoutX="64.0" layoutY="541.0" text="Descripción del equipo" />
+      <TextArea fx:id="taDescripcionEquipo" layoutX="64.0" layoutY="562.0" prefHeight="102.0" prefWidth="664.0" />
+      <TextField fx:id="tfCotizacion" layoutX="62.0" layoutY="693.0" />
+      <Label layoutX="64.0" layoutY="672.0" text="Cotización" />
+      <Label layoutX="64.0" layoutY="731.0" text="Total" />
+      <TextField fx:id="tfTotal" layoutX="62.0" layoutY="752.0" />
+      <TextField fx:id="tfPrecioDiagnostico" editable="false" layoutX="303.0" layoutY="752.0" text="50" />
+      <Label layoutX="303.0" layoutY="731.0" text="Precio diagnóstico" />
+      <ComboBox fx:id="cbTipoServicioSugerido" layoutX="303.0" layoutY="693.0" prefHeight="31.0" prefWidth="187.0" />
+      <Label layoutX="301.0" layoutY="672.0" text="Tipo de servicio sugerido" />
+   </children>
+</AnchorPane>

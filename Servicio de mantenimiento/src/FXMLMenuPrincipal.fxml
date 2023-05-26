@@ -13,45 +13,58 @@
 
 <AnchorPane id="AnchorPane" prefHeight="652.0" prefWidth="792.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="FXMLMenuPrincipalController">
    <children>
-      <VBox layoutY="81.0" prefHeight="571.0" prefWidth="279.0" style="-fx-background-color: #00519E;">
-         <children>
-            <Button alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="74.0" prefWidth="281.0" style="-fx-background-color: #00519E;" text="Administración de servicios" textFill="WHITE">
-               <font>
-                  <Font size="16.0" />
-               </font>
-               <graphic>
-                  <ImageView fitHeight="48.0" fitWidth="56.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@Iconos/AdministraciónServicio.png" />
-                     </image></ImageView>
-               </graphic>
-            </Button>
-            <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="280.0" style="-fx-background-color: #00519E;" text="Administración de refacciones" textFill="WHITE">
-               <graphic>
-                  <ImageView fitHeight="52.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@Iconos/AdministraciónRefacción.png" />
-                     </image></ImageView>
-               </graphic>
-            </Button>
-            <Button alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="31.0" prefWidth="280.0" style="-fx-background-color: #00519E;" text="Cerrar sesión" textFill="WHITE">
-               <graphic>
-                  <ImageView fitHeight="54.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@Iconos/CerrarSesión.png" />
-                     </image></ImageView>
-               </graphic>
-            </Button>
-         </children>
-      </VBox>
-      <Pane prefHeight="81.0" prefWidth="792.0" style="-fx-background-color: #00519E;">
-         <children>
-            <Label layoutX="274.0" layoutY="14.0" text="Menú principal" textFill="WHITE">
-               <font>
-                  <Font size="37.0" />
-               </font>
-            </Label>
-         </children>
-      </Pane>
+      <BorderPane fx:id="borderPane" prefHeight="652.0" prefWidth="792.0">
+         <top>
+            <Pane prefHeight="81.0" prefWidth="792.0" style="-fx-background-color: #00519E;" BorderPane.alignment="CENTER">
+               <children>
+                  <Label fx:id="lbMenuPrincipal" layoutX="274.0" layoutY="14.0" text="Menú principal" textFill="WHITE">
+                     <font>
+                        <Font size="37.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+         </top>
+         <left>
+            <AnchorPane prefHeight="571.0" prefWidth="280.0" BorderPane.alignment="CENTER">
+               <children>
+                  <VBox prefHeight="571.0" prefWidth="279.0" style="-fx-background-color: #00519E;">
+                     <children>
+                        <Button alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#clicAdministracionServicios" prefHeight="74.0" prefWidth="281.0" style="-fx-background-color: #00519E;" text="Administración de servicios" textFill="WHITE">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                           <graphic>
+                              <ImageView fitHeight="48.0" fitWidth="56.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@Iconos/AdministraciónServicio.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <Button mnemonicParsing="false" onAction="#clicAdministracionRefacciones" prefHeight="31.0" prefWidth="280.0" style="-fx-background-color: #00519E;" text="Administración de refacciones" textFill="WHITE">
+                           <graphic>
+                              <ImageView fitHeight="52.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@Iconos/AdministraciónRefacción.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <Button alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#clicCerrarSesion" prefHeight="31.0" prefWidth="280.0" style="-fx-background-color: #00519E;" text="Cerrar sesión" textFill="WHITE">
+                           <graphic>
+                              <ImageView fitHeight="54.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@Iconos/CerrarSesión.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                     </children>
+                  </VBox>
+               </children>
+            </AnchorPane>
+         </left>
+      </BorderPane>
    </children>
 </AnchorPane>
