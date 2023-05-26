@@ -7,8 +7,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="858.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="Servicios.FXMLSolicitarDiagnosticoController">
+<AnchorPane id="AnchorPane" prefHeight="858.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Servicios.FXMLSolicitarDiagnosticoController">
    <children>
       <Pane prefHeight="67.0" prefWidth="792.0" style="-fx-background-color: #00519E;">
          <children>
@@ -40,5 +39,7 @@
       <Label layoutX="303.0" layoutY="731.0" text="Precio diagnóstico" />
       <ComboBox fx:id="cbTipoServicioSugerido" layoutX="303.0" layoutY="693.0" prefHeight="31.0" prefWidth="187.0" />
       <Label layoutX="301.0" layoutY="672.0" text="Tipo de servicio sugerido" />
+      <Button layoutX="62.0" layoutY="800.0" mnemonicParsing="false" onAction="#clicRegistrarDiagnostico" style="-fx-background-color: #00519E;" text="Registrar diagnóstico" textFill="WHITE" />
+      <Button layoutX="651.0" layoutY="800.0" mnemonicParsing="false" onAction="#clicCancelar" style="-fx-background-color: #FF0000;" text="Cancelar" textFill="WHITE" />
    </children>
 </AnchorPane>

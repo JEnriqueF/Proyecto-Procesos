@@ -8,10 +8,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="571.0" prefWidth="566.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="Servicios.FXMLServiciosController">
+<AnchorPane id="AnchorPane" prefHeight="571.0" prefWidth="566.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Servicios.FXMLServiciosController">
    <children>
-      <Button layoutX="107.0" layoutY="53.0" mnemonicParsing="false" prefHeight="90.0" prefWidth="308.0" style="-fx-background-color: #00519E;" text="Solicitar diagnóstico" textFill="WHITE">
+      <Button layoutX="107.0" layoutY="53.0" mnemonicParsing="false" onAction="#clicSolicitarDiagnostico" prefHeight="90.0" prefWidth="308.0" style="-fx-background-color: #00519E;" text="Solicitar diagnóstico" textFill="WHITE">
          <font>
             <Font size="18.0" />
          </font>

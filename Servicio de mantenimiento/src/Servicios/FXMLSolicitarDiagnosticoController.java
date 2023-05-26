@@ -1,16 +1,24 @@
 package Servicios;
 
 import Modelo.DAO.ClienteDAO;
+import Modelo.DAO.TipoServicioDAO;
 import Modelo.POJO.Cliente;
+import Modelo.POJO.TipoServicio;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -19,6 +27,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 public class FXMLSolicitarDiagnosticoController implements Initializable {
 
@@ -45,14 +55,16 @@ public class FXMLSolicitarDiagnosticoController implements Initializable {
     @FXML
     private TextField tfPrecioDiagnostico;
     @FXML
-    private ComboBox<String> cbTipoServicioSugerido;
+    private ComboBox<TipoServicio> cbTipoServicioSugerido;
     
     private ObservableList<Cliente> listaClientes;
+    private ObservableList<TipoServicio> listaTipoServicios;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         configurarTabla();
         cargarTabla();
+        cargarListaTipoServicio();
     }
     
     private void configurarTabla(){
@@ -69,6 +81,17 @@ public class FXMLSolicitarDiagnosticoController implements Initializable {
             tvClientes.setItems(listaClientes);
         }catch(SQLException | NullPointerException e){
             e.printStackTrace();
+        }
+    }
+    
+    private void cargarListaTipoServicio(){
+        listaTipoServicios = FXCollections.observableArrayList();
+        try{
+            ArrayList<TipoServicio> tipoServiciosBD = TipoServicioDAO.obtenerTipoServicio();
+            listaTipoServicios.addAll(tipoServiciosBD);
+            cbTipoServicioSugerido.setItems(listaTipoServicios);
+        }catch(SQLException ex){
+            ex.printStackTrace();
         }
     }
     
@@ -111,5 +134,24 @@ public class FXMLSolicitarDiagnosticoController implements Initializable {
 
     @FXML
     private void clicAgregarCliente(ActionEvent event) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("FXMLRegistrarCliente.fxml"));
+            Parent ventanaBuscarRecurso = fxmlLoader.load();
+            Scene escenarioBuscarRecurso = new Scene(ventanaBuscarRecurso);
+            Stage nuevoEscenarioRegistrarRecursoDaniado = new Stage();
+            nuevoEscenarioRegistrarRecursoDaniado.setScene(escenarioBuscarRecurso);
+            nuevoEscenarioRegistrarRecursoDaniado.initModality(Modality.APPLICATION_MODAL);
+            nuevoEscenarioRegistrarRecursoDaniado.showAndWait();
+        } catch (IOException ex) {
+            Logger.getLogger(FXMLServiciosController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @FXML
+    private void clicRegistrarDiagnostico(ActionEvent event) {
+    }
+
+    @FXML
+    private void clicCancelar(ActionEvent event) {
     }
 }

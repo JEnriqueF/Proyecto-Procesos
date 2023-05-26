@@ -1,11 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Servicios.FXMLRegistrarClienteController">
-    
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="Servicios.FXMLRegistrarClienteController">
+   <children>
+      <Pane prefHeight="67.0" prefWidth="792.0" style="-fx-background-color: #00519E;">
+         <children>
+            <Label fx:id="lbMenuPrincipal" layoutX="256.0" layoutY="7.0" prefHeight="54.0" prefWidth="281.0" text="Registrar cliente" textFill="WHITE">
+               <font>
+                  <Font size="37.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <TextField fx:id="tfNombreCliente" layoutX="58.0" layoutY="141.0" prefHeight="31.0" prefWidth="419.0" />
+      <Label layoutX="58.0" layoutY="120.0" text="Nombre del cliente" />
+      <Label layoutX="514.0" layoutY="120.0" text="Número de teléfono" />
+      <TextField fx:id="tfTelefonoCliente" layoutX="514.0" layoutY="141.0" prefHeight="31.0" prefWidth="224.0" />
+      <TextField fx:id="tfCorreoCliente" layoutX="58.0" layoutY="228.0" prefHeight="31.0" prefWidth="419.0" />
+      <Label layoutX="58.0" layoutY="207.0" text="Correo" />
+      <Button layoutX="58.0" layoutY="313.0" mnemonicParsing="false" onAction="#clicRegistrarCliente" style="-fx-background-color: #00519E;" text="Aceptar" textFill="WHITE" />
+      <Button layoutX="661.0" layoutY="313.0" mnemonicParsing="false" onAction="#clicCancelar" style="-fx-background-color: #FF0000;" text="Cancelar" textFill="WHITE" />
+      <Label fx:id="lbErrorNombre" layoutX="58.0" layoutY="172.0" textFill="#f20000" />
+      <Label fx:id="lbErrorCorreo" layoutX="58.0" layoutY="259.0" textFill="#f20000" />
+      <Label fx:id="lbErrorNum" layoutX="514.0" layoutY="172.0" textFill="#f20000" />
+   </children>
 </AnchorPane>

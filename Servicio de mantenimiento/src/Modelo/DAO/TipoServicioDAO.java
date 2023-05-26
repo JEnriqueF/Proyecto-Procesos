@@ -17,10 +17,11 @@ public class TipoServicioDAO {
         
         if(conexionBD != null){
             try{
-                String consulta = "SELECT idTipoServicio, tipoServicio, cobroManoObra FROM Cliente "
-                        + "WHERE idTipoServicio > 1";
+                String consulta = "SELECT idTipoServicio, tipoServicio, cobroManoObra FROM TipoServicio "
+                        + "WHERE idTipoServicio > ?";
                 
                 PreparedStatement consultaUsuario = conexionBD.prepareStatement(consulta);
+                consultaUsuario.setInt(1, 1);
                 ResultSet resultadoConsulta = consultaUsuario.executeQuery();
                 usuariosBD = new ArrayList<>();
                 
@@ -29,6 +30,7 @@ public class TipoServicioDAO {
                     temp.setIdTipoServicio(resultadoConsulta.getInt("idTipoServicio"));
                     temp.setTipoServicio(resultadoConsulta.getString("tipoServicio"));
                     temp.setCobroManoObra(resultadoConsulta.getDouble("cobroManoObra"));
+                    
                     usuariosBD.add(temp);
                 }
             }catch(SQLException e){
