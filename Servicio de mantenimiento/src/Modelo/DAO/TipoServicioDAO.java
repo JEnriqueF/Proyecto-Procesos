@@ -17,8 +17,7 @@ public class TipoServicioDAO {
         
         if(conexionBD != null){
             try{
-                String consulta = "SELECT idTipoServicio, tipoServicio, cobroManoObra FROM TipoServicio "
-                        + "WHERE idTipoServicio > ?";
+                String consulta = "SELECT * FROM TipoServicio WHERE idTipoServicio > ?";
                 
                 PreparedStatement consultaUsuario = conexionBD.prepareStatement(consulta);
                 consultaUsuario.setInt(1, 1);

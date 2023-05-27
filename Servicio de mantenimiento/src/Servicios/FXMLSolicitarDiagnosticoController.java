@@ -1,9 +1,12 @@
 package Servicios;
 
 import Modelo.DAO.ClienteDAO;
+import Modelo.DAO.EquipoComputoDAO;
 import Modelo.DAO.TipoServicioDAO;
 import Modelo.POJO.Cliente;
+import Modelo.POJO.ResultadoOperacion;
 import Modelo.POJO.TipoServicio;
+import Utilidades.Utilidades;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -11,8 +14,12 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -64,25 +71,29 @@ public class FXMLSolicitarDiagnosticoController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         configurarTabla();
         cargarTabla();
+        buscarCliente();
         cargarListaTipoServicio();
     }
     
     private void configurarTabla(){
         tcNombre.setCellValueFactory(new PropertyValueFactory("nombre"));
         tcNumTelefono.setCellValueFactory(new PropertyValueFactory("numTelefono"));
-        tcCorreo.setCellFactory(new PropertyValueFactory("correo"));
+        tcCorreo.setCellValueFactory(new PropertyValueFactory("correo"));
     }
     
     private void cargarTabla(){
         try{
             listaClientes = FXCollections.observableArrayList();
-            ArrayList<Cliente> recursoBD = ClienteDAO.obtenerClientes();
-            listaClientes.addAll(recursoBD);
-            System.out.println(listaClientes);
+            ArrayList<Cliente> clienteBD = ClienteDAO.obtenerClientes();
+            listaClientes.addAll(clienteBD);
             tvClientes.setItems(listaClientes);
         }catch(SQLException | NullPointerException e){
             e.printStackTrace();
         }
+    }
+    
+    public void actualizarTablaClientes() {
+        cargarTabla();
     }
     
     private void cargarListaTipoServicio(){
@@ -96,52 +107,47 @@ public class FXMLSolicitarDiagnosticoController implements Initializable {
         }
     }
     
-    /*private void buscarCliente(ActionEvent event) {
-        try {
-            String matricula = tfIdentificador.getText();
+    private void buscarCliente() {
+        if(listaClientes.size() > 0){
+            FilteredList<Cliente> filtroClientes = new FilteredList<>(listaClientes, p -> true);
             
-            //¿Se introdujo un nombre de usuario de biblioteca?
-            if(matricula.isEmpty()){
-                Utilidades.mostrarAlertaSimple("", "Debe escribir el nombre de un usuario de la biblioteca", 
-                        Alert.AlertType.WARNING);
-                return;
-            }
+            tfBuscarCliente.textProperty().addListener(new ChangeListener<String>(){
+                @Override
+                public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                    filtroClientes.setPredicate(busqueda -> {
+                        if(newValue == null || newValue.isEmpty()){
+                            return true;
+                        }
+                        
+                        if(busqueda.getNombre().contains(newValue.toLowerCase())){
+                            return true;
+                        }
+                        
+                        return false;
+                    });
+                }                
+            });
             
-            ArrayList<UsuarioBiblioteca> prestamosBD = UsuarioBibliotecaDAO.obtenerUsuario(matricula);
-            
-            if(prestamosBD.isEmpty()){
-                Utilidades.mostrarAlertaSimple("Usuario no encontrado", "El usuario ingresado no se encontró", 
-                        Alert.AlertType.WARNING);
-                return;
-            }
-            
-            for(UsuarioBiblioteca usuario : prestamosBD){
-                lbNombreUsuario.setText(usuario.getNombre());
-                lbCorreoUsuario.setText(usuario.getCorreo());
-                lbDireccionUsuario.setText(usuario.getDomicilio());
-                lbTelefonoUsuario.setText(usuario.getTelefono());
-                
-                //¿El usuario del sistema dio clic en "Solicitar renovación"?
-                if(esRenovacion){
-                    cargarTablaRenovacion(usuario);
-                }else{
-                    cargarTabla(usuario);
-                }
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
+            SortedList<Cliente> recursosFiltrados = new SortedList<>(filtroClientes);
+            recursosFiltrados.comparatorProperty().bind(tvClientes.comparatorProperty());
+            tvClientes.setItems(recursosFiltrados);
         }
-    }*/
+    }
 
     @FXML
     private void clicAgregarCliente(ActionEvent event) {
+        //Se implementa el patrón de diseño Observer
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("FXMLRegistrarCliente.fxml"));
             Parent ventanaBuscarRecurso = fxmlLoader.load();
-            Scene escenarioBuscarRecurso = new Scene(ventanaBuscarRecurso);
+            FXMLRegistrarClienteController registrarClienteController = fxmlLoader.getController();
+
             Stage nuevoEscenarioRegistrarRecursoDaniado = new Stage();
-            nuevoEscenarioRegistrarRecursoDaniado.setScene(escenarioBuscarRecurso);
+            nuevoEscenarioRegistrarRecursoDaniado.setScene(new Scene(ventanaBuscarRecurso));
             nuevoEscenarioRegistrarRecursoDaniado.initModality(Modality.APPLICATION_MODAL);
+
+            registrarClienteController.setClienteRegistroListener(() -> cargarTabla());
+        
             nuevoEscenarioRegistrarRecursoDaniado.showAndWait();
         } catch (IOException ex) {
             Logger.getLogger(FXMLServiciosController.class.getName()).log(Level.SEVERE, null, ex);
@@ -150,9 +156,28 @@ public class FXMLSolicitarDiagnosticoController implements Initializable {
 
     @FXML
     private void clicRegistrarDiagnostico(ActionEvent event) {
+        Cliente clienteSeleccionado = tvClientes.getSelectionModel().getSelectedItem();
+        
+        if(clienteSeleccionado != null){
+            try{
+                ResultadoOperacion registroEquipo = EquipoComputoDAO.registrarEquipo(taDescripcionEquipo.getText());
+                
+                if(!registroEquipo.isError()){
+                    
+                }else{
+                    Utilidades.mostrarAlertaSimple("Error", registroEquipo.getMensaje(), Alert.AlertType.ERROR);
+                }
+            }catch(SQLException e){
+                e.printStackTrace();
+            }
+        }else{
+            Utilidades.mostrarAlertaSimple("Error", "No se ha elegido al cliente", Alert.AlertType.ERROR);
+        }
     }
 
     @FXML
     private void clicCancelar(ActionEvent event) {
+        Stage escenario = (Stage) lbMenuPrincipal.getScene().getWindow();
+        escenario.close();
     }
 }
