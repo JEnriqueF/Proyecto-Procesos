@@ -8,10 +8,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="Refacciones.FXMLRefaccionesController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Refacciones.FXMLRefaccionesController">
    <children>
-      <Button layoutX="106.0" layoutY="155.0" mnemonicParsing="false" prefHeight="90.0" prefWidth="308.0" style="-fx-background-color: #00519E;" text="Solicitar diagnóstico" textFill="WHITE">
+      <Button layoutX="105.0" layoutY="48.0" mnemonicParsing="false" prefHeight="90.0" prefWidth="308.0" style="-fx-background-color: #00519E;" text="Solicitar diagnóstico" textFill="WHITE">
          <font>
             <Font size="18.0" />
          </font>
@@ -22,6 +21,11 @@
                </image>
             </ImageView>
          </graphic>
+      </Button>
+      <Button layoutX="105.0" layoutY="256.0" mnemonicParsing="false" onAction="#registrarRefaccion" prefHeight="90.0" prefWidth="308.0" style="-fx-background-color: #00519E;" text="Registrar Refacción" textFill="WHITE">
+         <font>
+            <Font size="18.0" />
+         </font>
       </Button>
    </children>
 </AnchorPane>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="464.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Refacciones.FXMLRegistrarRefaccionController">
+   <children>
+      <Pane prefHeight="487.0" prefWidth="900.0">
+         <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#00519e" height="80.0" stroke="WHITE" strokeMiterLimit="0.0" strokeType="INSIDE" strokeWidth="0.0" width="900.0" />
+            <Label layoutX="286.0" layoutY="13.0" text="Lista de Refacciones" textFill="WHITE">
+               <font>
+                  <Font size="37.0" />
+               </font>
+            </Label>
+            <TextField fx:id="tfBusqueda" layoutX="200.0" layoutY="101.0" prefHeight="31.0" prefWidth="500.0" promptText="Introduzca el nombre de la refacción" />
+            <TableView fx:id="tvRefacciones" layoutX="50.0" layoutY="150.0" prefHeight="200.0" prefWidth="800.0">
+              <columns>
+                <TableColumn fx:id="tcNombre" prefWidth="382.0" text="Nombre" />
+                <TableColumn fx:id="tcProveedor" minWidth="0.0" prefWidth="220.0" text="Proveedor" />
+                  <TableColumn fx:id="tcPrecio" prefWidth="100.0" text="Precio" />
+                  <TableColumn fx:id="tcUnidades" prefWidth="100.0" text="Unidades" />
+              </columns>
+            </TableView>
+            <TextField fx:id="tfUnidades" layoutX="320.0" layoutY="363.0" prefHeight="31.0" prefWidth="120.0" />
+            <Button layoutX="440.0" layoutY="363.0" mnemonicParsing="false" onAction="#clicBtnAgregarUnidades" style="-fx-background-color: #30FF24;" text="Agregar Unidades">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></Button>
+            <Button layoutX="50.0" layoutY="442.0" mnemonicParsing="false" onAction="#clicBtnRegistrarNueva" prefHeight="31.0" prefWidth="130.0" style="-fx-background-color: #00519e;" text="Registrar Nueva" textFill="WHITE">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></Button>
+            <Button fx:id="btnSalir" layoutX="720.0" layoutY="442.0" mnemonicParsing="false" onAction="#cerrarVentana" prefHeight="31.0" prefWidth="130.0" style="-fx-background-color: RED;" text="Salir" textFill="WHITE">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></Button>
+            <Label fx:id="lbUnidadesError" layoutX="320.0" layoutY="394.0" textFill="RED" />
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>
