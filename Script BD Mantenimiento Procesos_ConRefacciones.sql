@@ -30,7 +30,7 @@ CREATE TABLE `cliente` (
   `numTelefono` varchar(45) NOT NULL,
   `correo` varchar(45) NOT NULL,
   PRIMARY KEY (`idCliente`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -39,6 +39,7 @@ CREATE TABLE `cliente` (
 
 LOCK TABLES `cliente` WRITE;
 /*!40000 ALTER TABLE `cliente` DISABLE KEYS */;
+INSERT INTO `cliente` VALUES (3,'Óscar Daniel Hernández Hernández','2281988765','zs20019887@estudiantes.uv.mx'),(4,'Jesús Enrique Fernández González','2281532121','zs19014030@estudiantes.uv.mx');
 /*!40000 ALTER TABLE `cliente` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -53,7 +54,7 @@ CREATE TABLE `equipocomputo` (
   `idEquipoComputo` int NOT NULL AUTO_INCREMENT,
   `descripcionEquipo` varchar(45) NOT NULL,
   PRIMARY KEY (`idEquipoComputo`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -62,6 +63,7 @@ CREATE TABLE `equipocomputo` (
 
 LOCK TABLES `equipocomputo` WRITE;
 /*!40000 ALTER TABLE `equipocomputo` DISABLE KEYS */;
+INSERT INTO `equipocomputo` VALUES (29,'Lenovo ideapad'),(31,'Lenovo ideapad');
 /*!40000 ALTER TABLE `equipocomputo` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -156,13 +158,14 @@ DROP TABLE IF EXISTS `servicio`;
 CREATE TABLE `servicio` (
   `idServicio` int NOT NULL AUTO_INCREMENT,
   `descripcionDiagnostico` varchar(200) NOT NULL,
-  `descripcionMantenimiento` varchar(200) NOT NULL,
+  `descripcionMantenimiento` varchar(200) DEFAULT NULL,
   `cotizacion` double NOT NULL,
   `estadoServicio` varchar(45) NOT NULL,
   `montoTotal` double NOT NULL,
   `idTipoServicio` int DEFAULT NULL,
   `idCliente` int DEFAULT NULL,
   `idEquipoComputo` int DEFAULT NULL,
+  `idPersonal` int DEFAULT NULL,
   PRIMARY KEY (`idServicio`),
   KEY `idTipoServicio` (`idTipoServicio`),
   KEY `idCliente` (`idCliente`),
@@ -170,7 +173,7 @@ CREATE TABLE `servicio` (
   CONSTRAINT `servicio_ibfk_1` FOREIGN KEY (`idTipoServicio`) REFERENCES `tiposervicio` (`idTipoServicio`),
   CONSTRAINT `servicio_ibfk_2` FOREIGN KEY (`idCliente`) REFERENCES `cliente` (`idCliente`),
   CONSTRAINT `servicio_ibfk_3` FOREIGN KEY (`idEquipoComputo`) REFERENCES `equipocomputo` (`idEquipoComputo`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -179,6 +182,7 @@ CREATE TABLE `servicio` (
 
 LOCK TABLES `servicio` WRITE;
 /*!40000 ALTER TABLE `servicio` DISABLE KEYS */;
+INSERT INTO `servicio` VALUES (3,'Hace mucho ruido, se calienta mucho y rápido',NULL,100,'Activo',200,3,3,29,NULL),(5,'Ya no enciende',NULL,120,'Activo',270,2,3,31,NULL);
 /*!40000 ALTER TABLE `servicio` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -240,4 +244,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-05-26 13:03:13
+-- Dump completed on 2023-05-28  2:36:05
