@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="380.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Refacciones.FXMLRegistrarRefaccionNuevaController">
+   <children>
+      <Pane prefHeight="380.0" prefWidth="700.0">
+         <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#00519e" height="80.0" stroke="WHITE" strokeMiterLimit="0.0" strokeType="INSIDE" strokeWidth="0.0" width="700.0" />
+            <Label layoutX="194.0" layoutY="13.0" text="Registrar Refacción" textFill="WHITE">
+               <font>
+                  <Font size="37.0" />
+               </font>
+            </Label>
+            <Label layoutX="50.0" layoutY="88.0" text="Nombre de la refacción" />
+            <TextField fx:id="tfNombre" layoutX="50.0" layoutY="109.0" prefHeight="31.0" prefWidth="600.0" />
+            <Label layoutX="50.0" layoutY="166.0" text="Precio" />
+            <TextField fx:id="tfPrecio" layoutX="50.0" layoutY="187.0" />
+            <TextField fx:id="tfUnidades" layoutX="463.0" layoutY="187.0" />
+            <Label layoutX="463.0" layoutY="166.0" text="Unidades" />
+            <TextField fx:id="tfProveedor" layoutX="50.0" layoutY="271.0" prefHeight="31.0" prefWidth="300.0" />
+            <Label layoutX="50.0" layoutY="250.0" text="Proveedor" />
+            <Button layoutX="50.0" layoutY="331.0" mnemonicParsing="false" onAction="#clicBtnRegistrar" style="-fx-background-color: #00519e;" text="Registrar" textFill="WHITE">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button fx:id="btnCancelar" layoutX="573.0" layoutY="331.0" mnemonicParsing="false" onAction="#cerrarVentana" style="-fx-background-color: RED;" text="Cancelar" textFill="WHITE">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Label fx:id="lbNombreError" layoutX="50.0" layoutY="140.0" textFill="RED" />
+            <Label fx:id="lbPrecioError" layoutX="50.0" layoutY="218.0" textFill="RED" />
+            <Label fx:id="lbUnidadesError" layoutX="463.0" layoutY="218.0" textFill="RED" />
+            <Label fx:id="lbProveedorError" layoutX="50.0" layoutY="302.0" textFill="RED" />
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>
