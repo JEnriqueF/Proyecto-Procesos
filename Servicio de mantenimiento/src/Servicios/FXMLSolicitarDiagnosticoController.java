@@ -2,6 +2,7 @@ package Servicios;
 
 import Modelo.DAO.ClienteDAO;
 import Modelo.DAO.EquipoComputoDAO;
+import Modelo.DAO.ServicioDAO;
 import Modelo.DAO.TipoServicioDAO;
 import Modelo.POJO.Cliente;
 import Modelo.POJO.ResultadoOperacion;
@@ -60,12 +61,18 @@ public class FXMLSolicitarDiagnosticoController implements Initializable {
     @FXML
     private TextField tfTotal;
     @FXML
-    private TextField tfPrecioDiagnostico;
-    @FXML
     private ComboBox<TipoServicio> cbTipoServicioSugerido;
+    @FXML
+    private Label lbErrorDiagnostico;
+    @FXML
+    private Label lbErrorCotizacion;
+    @FXML
+    private Label lbErrorTipoServicio;
     
     private ObservableList<Cliente> listaClientes;
     private ObservableList<TipoServicio> listaTipoServicios;
+    @FXML
+    private Label lbErrorEquipo;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -73,6 +80,16 @@ public class FXMLSolicitarDiagnosticoController implements Initializable {
         cargarTabla();
         buscarCliente();
         cargarListaTipoServicio();
+        cbTipoServicioSugerido.valueProperty().addListener(new ChangeListener<TipoServicio>(){
+            @Override
+            public void changed(ObservableValue<? extends TipoServicio> observable, TipoServicio oldValue, TipoServicio newValue) {
+                actualizarTotal(tfCotizacion.getText(), newValue, tfTotal);
+            }
+        });
+        
+        tfCotizacion.textProperty().addListener((observable, oldValue, newValue) -> {
+            actualizarTotal(newValue, cbTipoServicioSugerido.getValue(), tfTotal);
+        });
     }
     
     private void configurarTabla(){
@@ -104,6 +121,16 @@ public class FXMLSolicitarDiagnosticoController implements Initializable {
             cbTipoServicioSugerido.setItems(listaTipoServicios);
         }catch(SQLException ex){
             ex.printStackTrace();
+        }
+    }
+    
+    private void actualizarTotal(String cotizacionStr, TipoServicio tipoServicio, TextField tfTotal) {
+        try {
+            double cotizacion = Double.parseDouble(cotizacionStr);
+            double total = cotizacion + (tipoServicio != null ? tipoServicio.getCobroManoObra() : 0);
+            tfTotal.setText(String.valueOf(total));
+        } catch (NumberFormatException ex) {
+            tfTotal.setText("");
         }
     }
     
@@ -141,7 +168,6 @@ public class FXMLSolicitarDiagnosticoController implements Initializable {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("FXMLRegistrarCliente.fxml"));
             Parent ventanaBuscarRecurso = fxmlLoader.load();
             FXMLRegistrarClienteController registrarClienteController = fxmlLoader.getController();
-
             Stage nuevoEscenarioRegistrarRecursoDaniado = new Stage();
             nuevoEscenarioRegistrarRecursoDaniado.setScene(new Scene(ventanaBuscarRecurso));
             nuevoEscenarioRegistrarRecursoDaniado.initModality(Modality.APPLICATION_MODAL);
@@ -157,15 +183,34 @@ public class FXMLSolicitarDiagnosticoController implements Initializable {
     @FXML
     private void clicRegistrarDiagnostico(ActionEvent event) {
         Cliente clienteSeleccionado = tvClientes.getSelectionModel().getSelectedItem();
+        boolean camposLlenos = true;
         
         if(clienteSeleccionado != null){
             try{
+                camposLlenos = validarCamposLlenos();
+                if(!camposLlenos){
+                    Utilidades.mostrarAlertaSimple("Error", "Información faltante", Alert.AlertType.ERROR);
+                    return;
+                }
+                        
                 ResultadoOperacion registroEquipo = EquipoComputoDAO.registrarEquipo(taDescripcionEquipo.getText());
                 
-                if(!registroEquipo.isError()){
+                int equipoNuevo = EquipoComputoDAO.obtenerEquipoNuevo(taDescripcionEquipo.getText());
+                
+                ResultadoOperacion registroDiagnostico = ServicioDAO.registrarDiagnostico(
+                        taDescripcionDiagnostico.getText(), Double.parseDouble(tfCotizacion.getText()), 
+                        Double.parseDouble(tfTotal.getText()), cbTipoServicioSugerido.getValue().getIdTipoServicio(), 
+                        clienteSeleccionado.getIdCliente(), equipoNuevo);
+                        
+                if(!registroDiagnostico.isError()){
+                    Utilidades.mostrarAlertaSimple("Éxito", "Diagnóstico guardado", Alert.AlertType.CONFIRMATION);
                     
+                    taDescripcionDiagnostico.setText("");
+                    taDescripcionEquipo.setText("");
+                    tfCotizacion.setText("");
+                    cbTipoServicioSugerido.setValue(null);
                 }else{
-                    Utilidades.mostrarAlertaSimple("Error", registroEquipo.getMensaje(), Alert.AlertType.ERROR);
+                    Utilidades.mostrarAlertaSimple("Error", "No fue posible guardar el diagnóstico", Alert.AlertType.ERROR);
                 }
             }catch(SQLException e){
                 e.printStackTrace();
@@ -179,5 +224,41 @@ public class FXMLSolicitarDiagnosticoController implements Initializable {
     private void clicCancelar(ActionEvent event) {
         Stage escenario = (Stage) lbMenuPrincipal.getScene().getWindow();
         escenario.close();
+    }
+    
+    private boolean validarCamposLlenos(){
+        boolean campoLleno = true;    
+        
+        lbErrorDiagnostico.setText("");
+        lbErrorEquipo.setText("");
+        lbErrorCotizacion.setText("");
+        lbErrorTipoServicio.setText("");
+        
+        taDescripcionDiagnostico.setStyle("");
+        taDescripcionEquipo.setStyle("");
+        tfCotizacion.setStyle("");
+        cbTipoServicioSugerido.setStyle("");
+        
+        if(taDescripcionDiagnostico.getText().isEmpty()){
+            lbErrorDiagnostico.setText("Información faltante");
+            taDescripcionDiagnostico.setStyle("-fx-border-color: red;");
+            campoLleno = false;
+        }
+        if(taDescripcionEquipo.getText().isEmpty()){
+            lbErrorEquipo.setText("Información faltante");
+            taDescripcionEquipo.setStyle("-fx-border-color: red;");
+            campoLleno = false;
+        }
+        if(tfCotizacion.getText().isEmpty()){
+            lbErrorCotizacion.setText("Información faltante");
+            tfCotizacion.setStyle("-fx-border-color: red;");
+            campoLleno = false;
+        }
+        if(cbTipoServicioSugerido.getValue() == null){
+            lbErrorTipoServicio.setText("Información faltante");
+            cbTipoServicioSugerido.setStyle("-fx-border-color: red;");
+            campoLleno = false;
+        }
+        return campoLleno;
     }
 }

@@ -1,14 +1,16 @@
 package Modelo.DAO;
 
 import Modelo.ConexionBaseDatos;
-import Modelo.POJO.EquipoComputo;
 import Modelo.POJO.ResultadoOperacion;
+import Utilidades.Utilidades;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import javafx.scene.control.Alert;
 
 public class EquipoComputoDAO {
-    public static ResultadoOperacion registrarEquipo(String descripcion) throws SQLException{
+    public static ResultadoOperacion registrarEquipo(String descripcion) throws SQLException{        
         Connection conexionBD = ConexionBaseDatos.abrirConexionBaseDatos();
         ResultadoOperacion respuesta = new ResultadoOperacion();
         respuesta.setError(true);
@@ -31,30 +33,29 @@ public class EquipoComputoDAO {
             } finally {
                 conexionBD.close();
             }
+        }else{
+            Utilidades.mostrarAlertaSimple("Error", "Falló la conexión con la base de datos.\nInténtelo más tarde", 
+                    Alert.AlertType.ERROR);
         }
         return respuesta;  
     }
     
-    /*public static ResultadoOperacion obtenerEquipo() throws SQLException{
-        ResultadoOperacion usuariosBD = null;
+    public static int obtenerEquipoNuevo(String descripcionEquipo) throws SQLException{
+        int equipoBD = -1;
         Connection conexionBD = ConexionBaseDatos.abrirConexionBaseDatos();
         
         if(conexionBD != null){
             try{
-                String consulta = "SELECT * FROM mantenimientoprocesos.cliente";
+                String consulta = "SELECT MAX(idEquipoComputo) FROM equipocomputo WHERE descripcionEquipo = ?";
                 
-                PreparedStatement consultaUsuario = conexionBD.prepareStatement(consulta);
-                ResultSet resultadoConsulta = consultaUsuario.executeQuery();
-                usuariosBD = new ArrayList<>();
+                PreparedStatement consultaEquipo = conexionBD.prepareStatement(consulta);
+                consultaEquipo.setString(1, descripcionEquipo);
+                ResultSet resultadoConsulta = consultaEquipo.executeQuery();
                 
-                while(resultadoConsulta.next()){
-                    Cliente temp = new Cliente();
-                    temp.setIdCliente(resultadoConsulta.getInt("idCliente"));
-                    temp.setNombre(resultadoConsulta.getString("nombre"));
-                    temp.setNumTelefono(resultadoConsulta.getString("numTelefono"));
-                    temp.setCorreo(resultadoConsulta.getString("correo"));
-                    usuariosBD.add(temp);
+                if(resultadoConsulta.next()){
+                    equipoBD = resultadoConsulta.getInt(1);
                 }
+                //equipoBD = resultadoConsulta.getInt("idEquipoComputo");
             }catch(SQLException e){
                 e.printStackTrace();
             }finally{
@@ -64,6 +65,6 @@ public class EquipoComputoDAO {
             Utilidades.mostrarAlertaSimple("Error", "Falló la conexión con la base de datos.\nInténtelo más tarde", 
                     Alert.AlertType.ERROR);
         }
-        return usuariosBD;
-    }*/
+        return equipoBD;
+    }
 }
