@@ -101,7 +101,7 @@ public class FXMLRegistrarRefaccionController implements Initializable {
                         int unidadesSumadas = Integer.parseInt(tfUnidades.getText()) + refaccionSeleccionada.getUnidades();
                         
                         if(RefaccionDAO.agregarUnidades(unidadesSumadas, refaccionSeleccionada.getIdRefaccion())){
-                            Utilidades.mostrarAlertaSimple("Éxito", "Se agregaron " + tfUnidades.getText() + "de la refacción: " + refaccionSeleccionada.getNombreRefaccion(), Alert.AlertType.INFORMATION);
+                            Utilidades.mostrarAlertaSimple("Éxito", "Se agregaron " + tfUnidades.getText() + " unidades de la refacción: " + refaccionSeleccionada.getNombreRefaccion(), Alert.AlertType.INFORMATION);
                             cargarTabla();
                         }else{
                             Utilidades.mostrarAlertaSimple("Error", "No hay conexión a la base de datos. Inténtelo más tarde", Alert.AlertType.ERROR);
