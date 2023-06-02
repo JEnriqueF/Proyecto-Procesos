@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -146,7 +148,10 @@ public class FXMLSolicitarDiagnosticoController implements Initializable {
                             return true;
                         }
                         
-                        if(busqueda.getNombre().contains(newValue.toLowerCase())){
+                        String filtroMinusculas = newValue.toLowerCase();
+                        if(busqueda.getNombre().toLowerCase().contains(filtroMinusculas) 
+                                || busqueda.getNumTelefono().toLowerCase().contains(filtroMinusculas)
+                                || busqueda.getCorreo().toLowerCase().contains(filtroMinusculas)){
                             return true;
                         }
                         
@@ -183,13 +188,14 @@ public class FXMLSolicitarDiagnosticoController implements Initializable {
     @FXML
     private void clicRegistrarDiagnostico(ActionEvent event) {
         Cliente clienteSeleccionado = tvClientes.getSelectionModel().getSelectedItem();
-        boolean camposLlenos = true;
         
         if(clienteSeleccionado != null){
             try{
-                camposLlenos = validarCamposLlenos();
-                if(!camposLlenos){
+                if(!validarCamposLlenos()){
                     Utilidades.mostrarAlertaSimple("Error", "Información faltante", Alert.AlertType.ERROR);
+                    return;
+                }
+                if(!validarTipoDato()){
                     return;
                 }
                         
@@ -260,5 +266,29 @@ public class FXMLSolicitarDiagnosticoController implements Initializable {
             campoLleno = false;
         }
         return campoLleno;
+    }
+    
+    private boolean validarTipoDato(){
+        boolean tipoDato = true;
+        
+        lbErrorCotizacion.setText("");
+        tfCotizacion.setStyle("");
+        
+        //Se define la expresión que contiene los caracteres que no tomaremos como válidos
+        String invalidosEspeciales = ".*[a-zA-Z!@#$%^&*()].*";
+        
+        //Se compila la expresión en un objeto Pattern
+        Pattern patternEspeciales = Pattern.compile(invalidosEspeciales);
+        
+        //Creación de un objeto Matcher con la cadena a evaluar
+        Matcher validacionCotizacion = patternEspeciales.matcher(tfCotizacion.getText());
+        
+        //Valida si un caracter de la expresión está dentro de la cadena
+        if(validacionCotizacion.matches()){
+            lbErrorCotizacion.setText("Tipo de dato incorrecto");
+            tfCotizacion.setStyle("-fx-border-color: red;");
+            tipoDato = false;
+        }
+        return tipoDato;
     }
 }
