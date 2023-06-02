@@ -191,11 +191,8 @@ public class FXMLSolicitarDiagnosticoController implements Initializable {
         
         if(clienteSeleccionado != null){
             try{
-                if(!validarCamposLlenos()){
+                if(!validarCamposLlenos() || !validarTipoDato()){
                     Utilidades.mostrarAlertaSimple("Error", "Información faltante", Alert.AlertType.ERROR);
-                    return;
-                }
-                if(!validarTipoDato()){
                     return;
                 }
                         
