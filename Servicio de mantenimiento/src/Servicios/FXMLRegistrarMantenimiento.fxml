@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="928.0" prefWidth="792.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="Servicios.FXMLRegistrarMantenimientoController">
+   <children>
+      <Label fx:id="lbMenuPrincipal" prefHeight="54.0" prefWidth="360.0" text="Registrar diagnóstico" textFill="WHITE">
+         <font>
+            <Font size="37.0" />
+         </font>
+      </Label>
+      <Pane prefHeight="67.0" prefWidth="792.0" style="-fx-background-color: #00519E;">
+         <children>
+            <Label fx:id="lbRegistrarMantenimiento" layoutX="172.0" layoutY="7.0" prefHeight="54.0" prefWidth="448.0" text="Registrar Mantenimiento" textFill="WHITE">
+               <font>
+                  <Font size="37.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <TextField fx:id="tfBuscarCliente" layoutX="252.0" layoutY="95.0" prefHeight="31.0" prefWidth="308.0" promptText="Introduzca nombre del cliente" />
+      <TableView fx:id="tvClienteEquipo" layoutX="64.0" layoutY="139.0" prefHeight="111.0" prefWidth="665.0">
+         <columns>
+            <TableColumn fx:id="tcNombre" prefWidth="332.5" text="Nombre" />
+            <TableColumn fx:id="tcEquipoComputo" prefWidth="332.5" text="Equipo de cómputo" />
+         </columns>
+      </TableView>
+      <Button fx:id="clicAceptar" layoutX="661.0" layoutY="263.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="68.0" style="-fx-background-color: #30FF24;" text="Aceptar" />
+      <TextArea fx:id="taDescripcionDiagnostico" layoutX="64.0" layoutY="305.0" prefHeight="86.0" prefWidth="664.0" />
+      <Label layoutX="74.0" layoutY="288.0" text="Descripción del diagnóstico" />
+      <TextArea fx:id="taDescripcionEquipo" layoutX="65.0" layoutY="416.0" prefHeight="86.0" prefWidth="664.0" />
+      <Label layoutX="74.0" layoutY="399.0" text="Descripción del equipo" />
+      <TextField fx:id="tfBuscarRefaccion" layoutX="252.0" layoutY="540.0" prefHeight="31.0" prefWidth="308.0" promptText="Introduzca nombre de la refacción" />
+      <TableView fx:id="tvRefacciones" layoutX="64.0" layoutY="596.0" prefHeight="121.0" prefWidth="665.0">
+         <columns>
+            <TableColumn fx:id="tcRefaccion" prefWidth="365.0" text="Refacción" />
+            <TableColumn fx:id="tcCantidad" prefWidth="150.0" text="Cantidad" />
+            <TableColumn fx:id="tcSeleccionar" prefWidth="150.0" text="Seleccionar" />
+         </columns>
+      </TableView>
+      <TextArea fx:id="taDescripcionMantenimiento" layoutX="61.0" layoutY="767.0" prefHeight="86.0" prefWidth="664.0" />
+      <Label layoutX="74.0" layoutY="741.0" text="Descripción del mantenimiento" />
+      <Label layoutX="393.0" layoutY="733.0" text="Tipo de mantenimiento:" />
+      <RadioButton fx:id="rbCorrectivo" layoutX="544.0" layoutY="733.0" mnemonicParsing="false" text="Correctivo" />
+      <RadioButton fx:id="rbPreventivo" layoutX="648.0" layoutY="733.0" mnemonicParsing="false" text="Preventivo" />
+      <Button fx:id="btGuardarMantenimiento" layoutX="62.0" layoutY="870.0" mnemonicParsing="false" onAction="#clicGuardarMantenimiento" prefHeight="31.0" prefWidth="147.0" style="-fx-background-color: #00519E;" text="Guardar mantenimiento" textFill="WHITE" />
+      <Button fx:id="btFinalizarMantenimiento" layoutX="240.0" layoutY="870.0" mnemonicParsing="false" onAction="#clicFinalizarMantenimiento" prefHeight="31.0" prefWidth="153.0" style="-fx-background-color: #00519E;" text="Finalizar mantenimiento" textFill="WHITE" />
+      <Button fx:id="btCancelar" layoutX="649.0" layoutY="870.0" mnemonicParsing="false" onAction="#clicCancelar" prefHeight="31.0" prefWidth="77.0" style="-fx-background-color: #FF0000;" text="Cancelar" textFill="WHITE" />
+   </children>
+</AnchorPane>
