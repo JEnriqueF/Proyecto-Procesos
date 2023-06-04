@@ -26,10 +26,10 @@
       <TextField fx:id="tfBuscarCliente" layoutX="252.0" layoutY="95.0" prefHeight="31.0" prefWidth="308.0" promptText="Introduzca nombre del cliente" />
       <TableView fx:id="tvClienteEquipo" layoutX="74.0" layoutY="144.0" prefHeight="111.0" prefWidth="665.0">
          <columns>
-            <TableColumn fx:id="tcIDEquipoComputo" prefWidth="166.25" text="ID Equipo" />
-            <TableColumn fx:id="tcNombre" prefWidth="166.25" text="Nombre" />
-            <TableColumn fx:id="tcNumeroTelefono" prefWidth="166.25" text="Número de teléfono" />
-            <TableColumn fx:id="tcCorreoElectronico" prefWidth="166.25" text="Correo electrónico" />
+            <TableColumn fx:id="tcIDEquipoComputo" prefWidth="96.0" text="ID Equipo" />
+            <TableColumn fx:id="tcNombre" prefWidth="242.0" text="Nombre" />
+            <TableColumn fx:id="tcNumeroTelefono" prefWidth="102.0" text="Teléfono" />
+            <TableColumn fx:id="tcCorreoElectronico" prefWidth="228.0" text="Correo electrónico" />
          </columns>
       </TableView>
       <Button fx:id="btAceptar" layoutX="661.0" layoutY="263.0" mnemonicParsing="false" onAction="#cargarTablaClienteEquipo" prefHeight="25.0" prefWidth="68.0" style="-fx-background-color: #30FF24;" text="Aceptar" />

@@ -60,23 +60,22 @@ public class ServicioDAO {
 
     if (conexionBD != null) {
         try {
-            String consulta = "SELECT c.idCliente, c.nombre, c.numTelefono, c.correo, ec.idEquipoComputo " +
-                "FROM cliente c " +
-                "JOIN servicio s ON c.idCliente = s.idCliente " +
-                "JOIN equipocomputo ec ON s.idEquipoComputo = ec.idEquipoComputo";
+            String consulta = "SELECT cliente.idCliente, cliente.nombre, cliente.numTelefono, cliente.correo, equipocomputo.idEquipoComputo FROM cliente " +
+"	JOIN servicio ON cliente.idCliente = servicio.idCliente JOIN equipocomputo ON servicio.idEquipoComputo = equipocomputo.idEquipoComputo;";
 
             PreparedStatement consultaClientes = conexionBD.prepareStatement(consulta);
             ResultSet resultadoConsulta = consultaClientes.executeQuery();
 
             while (resultadoConsulta.next()) {
-                int idEquipoComputo = resultadoConsulta.getInt("idEquipoComputo");
-                String nombreCliente = resultadoConsulta.getString("nombre");
-                String numTelefono = resultadoConsulta.getString("numTelefono");
-                String correo = resultadoConsulta.getString("correo");
-
-                // Crea un objeto Cliente y asigna los valores correspondientes
-                Cliente cliente = new Cliente(idEquipoComputo, nombreCliente, numTelefono, correo);
-                clientes.add(cliente);
+                Cliente temp = new Cliente();
+                
+                temp.setIdCliente(resultadoConsulta.getInt("idCliente"));
+                temp.setNombre(resultadoConsulta.getString("nombre"));
+                temp.setNumTelefono(resultadoConsulta.getString("numTelefono"));
+                temp.setCorreo(resultadoConsulta.getString("correo"));
+                temp.setIdEquipoComputo(resultadoConsulta.getInt("idEquipoComputo"));
+                
+                clientes.add(temp);
             }
         } catch (SQLException e) {
             e.printStackTrace();

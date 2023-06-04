@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -48,9 +49,9 @@ public class FXMLRegistrarMantenimientoController implements Initializable {
     @FXML
     private TableView<Cliente> tvClienteEquipo;
     @FXML
-    private TableColumn<Cliente, String> tcNombre,tcCorreoElectronico,tcNumeroTelefono;
+    private TableColumn tcNombre,tcCorreoElectronico,tcNumeroTelefono;
     @FXML
-    private TableColumn<Cliente, Integer> tcIDEquipoComputo;
+    private TableColumn tcIDEquipoComputo;
     @FXML
     private Button btAceptar;
     @FXML
@@ -89,10 +90,10 @@ public class FXMLRegistrarMantenimientoController implements Initializable {
 
 
 private void configurarTablaClienteEquipo() {
-    tcNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
-    tcNumeroTelefono.setCellValueFactory(new PropertyValueFactory<>("numTelefono"));
-    tcCorreoElectronico.setCellValueFactory(new PropertyValueFactory<>("correo"));
-   tcIDEquipoComputo.setCellValueFactory(new PropertyValueFactory<>("idEquipoComputo"));
+    tcNombre.setCellValueFactory(new PropertyValueFactory("nombre"));
+    tcNumeroTelefono.setCellValueFactory(new PropertyValueFactory("numTelefono"));
+    tcCorreoElectronico.setCellValueFactory(new PropertyValueFactory("correo"));
+    tcIDEquipoComputo.setCellValueFactory(new PropertyValueFactory("idEquipoComputo"));
 }
 
 public void cargarTablaClienteEquipo() {
@@ -100,13 +101,6 @@ public void cargarTablaClienteEquipo() {
         listaClientes = FXCollections.observableArrayList();
         ArrayList<Cliente> clientesBD = ServicioDAO.obtenerClientesConEquipo();
         listaClientes.addAll(clientesBD);
-
-        for (Cliente cliente : listaClientes) {
-            System.out.println(cliente.getNombre());
-            System.out.println(cliente.getCorreo());
-            System.out.println(cliente.getNumTelefono());
-        }
-
         tvClienteEquipo.setItems(listaClientes);
     } catch (SQLException e) {
         e.printStackTrace();
