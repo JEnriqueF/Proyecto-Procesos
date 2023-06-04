@@ -1,12 +1,17 @@
 package Modelo.DAO;
 
 import Modelo.ConexionBaseDatos;
+import Modelo.POJO.Cliente;
+import Modelo.POJO.EquipoComputo;
 import Modelo.POJO.ResultadoOperacion;
+import Modelo.POJO.Servicio;
 import Utilidades.Utilidades;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import javafx.scene.control.Alert;
+import java.sql.ResultSet;
+import java.util.ArrayList;
 
 public class ServicioDAO {
     public static ResultadoOperacion registrarDiagnostico(String descripcionDiagnostico, double cotizacion, double montoTotal, 
@@ -47,4 +52,86 @@ public class ServicioDAO {
         }
         return respuesta;
     }
+  
+    
+    public static ArrayList<Cliente> obtenerClientesConEquipo() throws SQLException {
+    ArrayList<Cliente> clientes = new ArrayList<>();
+    Connection conexionBD = ConexionBaseDatos.abrirConexionBaseDatos();
+
+    if (conexionBD != null) {
+        try {
+            String consulta = "SELECT c.idCliente, c.nombre, c.numTelefono, c.correo, ec.idEquipoComputo " +
+                "FROM cliente c " +
+                "JOIN servicio s ON c.idCliente = s.idCliente " +
+                "JOIN equipocomputo ec ON s.idEquipoComputo = ec.idEquipoComputo";
+
+            PreparedStatement consultaClientes = conexionBD.prepareStatement(consulta);
+            ResultSet resultadoConsulta = consultaClientes.executeQuery();
+
+            while (resultadoConsulta.next()) {
+                int idEquipoComputo = resultadoConsulta.getInt("idEquipoComputo");
+                String nombreCliente = resultadoConsulta.getString("nombre");
+                String numTelefono = resultadoConsulta.getString("numTelefono");
+                String correo = resultadoConsulta.getString("correo");
+
+                // Crea un objeto Cliente y asigna los valores correspondientes
+                Cliente cliente = new Cliente(idEquipoComputo, nombreCliente, numTelefono, correo);
+                clientes.add(cliente);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            conexionBD.close();
+        }
+    } else {
+        Utilidades.mostrarAlertaSimple("Error", "Falló la conexión con la base de datos.\nInténtelo más tarde", Alert.AlertType.ERROR);
+    }
+
+    return clientes;
+}
+
+    
+    
+    
+
+    
+   /*public static Servicio obtenerDiagnosticoPorEquipoComputo(int idEquipoComputo) throws SQLException {
+    Connection conn = null;
+    PreparedStatement stmt = null;
+    ResultSet rs = null;
+    Servicio servicio = null;
+
+    try {
+        conn = ConexionBaseDatos.abrirConexionBaseDatos();
+        String query = "SELECT descripcionDiagnostico FROM Servicio WHERE idEquipoComputo = ?";
+        stmt = conn.prepareStatement(query);
+        stmt.setInt(1, idEquipoComputo);
+        rs = stmt.executeQuery();
+
+        if (rs.next()) {
+            String descripcionDiagnostico = rs.getString("descripcionDiagnostico");
+            servicio = new Servicio();
+            servicio.setDescripcionDiagnostico(descripcionDiagnostico);
+        }
+    } finally {
+        if (rs != null) {
+            rs.close();
+        }
+        if (stmt != null) {
+            stmt.close();
+        }
+        if (conn != null) {
+            conn.close();
+        }
+    }
+
+    return servicio;
+}/*/
+
+
+
+    
+    
+    
+    
 }

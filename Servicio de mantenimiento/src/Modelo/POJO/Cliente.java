@@ -1,6 +1,7 @@
 package Modelo.POJO;
 
 public class Cliente {
+    private int idEquipoComputo;
     private int idCliente;
     private String nombre, numTelefono, correo;
     
@@ -45,4 +46,16 @@ public class Cliente {
     public void setCorreo(String correo) {
         this.correo = correo;
     }
+    
+    
+    
+    public int getIdEquipoComputo() {
+        return idEquipoComputo;
+    }
+
+    public void setIdEquipoComputo(int idEquipoComputo) {
+        this.idEquipoComputo = idEquipoComputo;
+    }
+    
+
 }

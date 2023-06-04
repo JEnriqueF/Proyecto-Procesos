@@ -21,6 +21,13 @@ public class Servicio {
         this.montoTotal = montoTotal;
     }
 
+   public Servicio(int idServicio, int idCliente, int idEquipoComputo) {
+    this.idServicio = idServicio;
+    this.idCliente = idCliente;
+    this.idEquipoComputo = idEquipoComputo;
+}
+
+
     public int getIdServicio() {
         return idServicio;
     }
@@ -100,4 +107,6 @@ public class Servicio {
     public void setMontoTotal(double montoTotal) {
         this.montoTotal = montoTotal;
     }
+
+
 }

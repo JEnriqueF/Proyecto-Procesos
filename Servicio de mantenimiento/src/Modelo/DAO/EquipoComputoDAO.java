@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import javafx.scene.control.Alert;
 
 public class EquipoComputoDAO {
+    
     public static ResultadoOperacion registrarEquipo(String descripcion) throws SQLException{        
         Connection conexionBD = ConexionBaseDatos.abrirConexionBaseDatos();
         ResultadoOperacion respuesta = new ResultadoOperacion();
@@ -67,4 +68,5 @@ public class EquipoComputoDAO {
         }
         return equipoBD;
     }
+    
 }

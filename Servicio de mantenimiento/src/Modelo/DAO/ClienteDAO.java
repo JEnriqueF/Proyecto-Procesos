@@ -19,7 +19,6 @@ public class ClienteDAO {
         if(conexionBD != null){
             try{
                 String consulta = "SELECT * FROM mantenimientoprocesos.cliente";
-                
                 PreparedStatement consultaUsuario = conexionBD.prepareStatement(consulta);
                 ResultSet resultadoConsulta = consultaUsuario.executeQuery();
                 usuariosBD = new ArrayList<>();
@@ -43,6 +42,7 @@ public class ClienteDAO {
         }
         return usuariosBD;
     }
+    
     
     public static ResultadoOperacion registrarCliente(Cliente cliente) throws SQLException{
         ResultadoOperacion respuesta = new ResultadoOperacion();
@@ -75,4 +75,45 @@ public class ClienteDAO {
         
         return respuesta;
     }
+    
+   
+public static ArrayList<Cliente> obtenerClientesConEquipo() throws SQLException {
+    ArrayList<Cliente> clientes = new ArrayList<>();
+    Connection conexionBD = ConexionBaseDatos.abrirConexionBaseDatos();
+    
+    if (conexionBD != null) {
+        try {
+            String consulta = "SELECT ec.idEquipoComputo, c.nombre, c.numTelefono, c.correo " +
+                "FROM cliente c " +
+                "JOIN servicio s ON c.idCliente = s.idCliente " +
+                "JOIN equipocomputo ec ON s.idEquipoComputo = ec.idEquipoComputo";
+            PreparedStatement consultaClientes = conexionBD.prepareStatement(consulta);
+            ResultSet resultadoConsulta = consultaClientes.executeQuery();
+            
+            while (resultadoConsulta.next()) {
+                int idEquipoComputo = resultadoConsulta.getInt("idEquipoComputo");
+                String nombreCliente = resultadoConsulta.getString("nombre");
+                String numTelefono = resultadoConsulta.getString("numTelefono");
+                String correo = resultadoConsulta.getString("correo");
+
+                // Crea un objeto Cliente y asigna los valores correspondientes
+                Cliente cliente = new Cliente(idEquipoComputo, nombreCliente, numTelefono, correo);
+                clientes.add(cliente);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            conexionBD.close();
+        }
+    } else {
+        Utilidades.mostrarAlertaSimple("Error", "Falló la conexión con la base de datos.\nInténtelo más tarde", 
+                Alert.AlertType.ERROR);
+    }
+
+    return clientes;
+}
+
+
+
+
 }
