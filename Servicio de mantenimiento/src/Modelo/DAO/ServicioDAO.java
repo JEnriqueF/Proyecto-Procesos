@@ -54,6 +54,8 @@ public class ServicioDAO {
     }
   
     
+    
+    
     public static ArrayList<Cliente> obtenerClientesConEquipo() throws SQLException {
     ArrayList<Cliente> clientes = new ArrayList<>();
     Connection conexionBD = ConexionBaseDatos.abrirConexionBaseDatos();
@@ -89,48 +91,58 @@ public class ServicioDAO {
     return clientes;
 }
 
+ 
     
-    
-    
-
-    
-   /*public static Servicio obtenerDiagnosticoPorEquipoComputo(int idEquipoComputo) throws SQLException {
-    Connection conn = null;
-    PreparedStatement stmt = null;
-    ResultSet rs = null;
+public static Servicio obtenerDiagnosticoPorEquipoComputo(int idEquipoComputo) throws SQLException {
     Servicio servicio = null;
+String consulta = "SELECT servicio.idServicio, servicio.descripcionDiagnostico " +
+                  "FROM servicio " +
+                  "JOIN equipocomputo ON servicio.idEquipoComputo = equipocomputo.idEquipoComputo " +
+                  "WHERE equipocomputo.idEquipoComputo = ?";
 
-    try {
-        conn = ConexionBaseDatos.abrirConexionBaseDatos();
-        String query = "SELECT descripcionDiagnostico FROM Servicio WHERE idEquipoComputo = ?";
-        stmt = conn.prepareStatement(query);
-        stmt.setInt(1, idEquipoComputo);
-        rs = stmt.executeQuery();
+                   
+    
+    try (Connection conexionBD = ConexionBaseDatos.abrirConexionBaseDatos();
+         PreparedStatement consultaDiagnostico = conexionBD.prepareStatement(consulta)) {
 
-        if (rs.next()) {
-            String descripcionDiagnostico = rs.getString("descripcionDiagnostico");
+        consultaDiagnostico.setInt(1, idEquipoComputo);
+        ResultSet resultadoConsulta = consultaDiagnostico.executeQuery();
+
+        if (resultadoConsulta.next()) {
             servicio = new Servicio();
-            servicio.setDescripcionDiagnostico(descripcionDiagnostico);
+            servicio.setIdServicio(resultadoConsulta.getInt("idServicio"));
+            servicio.setDescripcionDiagnostico(resultadoConsulta.getString("descripcionDiagnostico"));
+            // Establecer los demás atributos del objeto Servicio según tu estructura de datos
         }
-    } finally {
-        if (rs != null) {
-            rs.close();
-        }
-        if (stmt != null) {
-            stmt.close();
-        }
-        if (conn != null) {
-            conn.close();
-        }
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
-
     return servicio;
-}/*/
-
-
-
-    
-    
-    
-    
 }
+
+
+    public static String obtenerTipoMantenimientoPorEquipoComputo(int idEquipoComputo) throws SQLException {
+        String tipoMantenimiento = null;
+        String consulta = "SELECT tipomantenimiento FROM equipocomputo WHERE idEquipoComputo = ?";
+
+        try (Connection conexionBD = ConexionBaseDatos.abrirConexionBaseDatos();
+             PreparedStatement consultaTipoMantenimiento = conexionBD.prepareStatement(consulta)) {
+
+            consultaTipoMantenimiento.setInt(1, idEquipoComputo);
+            ResultSet resultadoConsulta = consultaTipoMantenimiento.executeQuery();
+
+            if (resultadoConsulta.next()) {
+                tipoMantenimiento = resultadoConsulta.getString("tipomantenimiento");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return tipoMantenimiento;
+    }
+}
+
+    
+    
+    
+    

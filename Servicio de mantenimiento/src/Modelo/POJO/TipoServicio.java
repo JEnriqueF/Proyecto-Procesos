@@ -37,8 +37,5 @@ public class TipoServicio {
     public void setCobroManoObra(double cobroManoObra) {
         this.cobroManoObra = cobroManoObra;
     }
-    
-    public String toString(){
-        return tipoServicio;
-    }
+  
 }

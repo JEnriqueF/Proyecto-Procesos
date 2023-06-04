@@ -1,6 +1,5 @@
 package Servicios;
 
-import Modelo.DAO.ClienteDAO;
 import Modelo.DAO.EquipoComputoDAO;
 import Modelo.DAO.RefaccionDAO;
 import Modelo.DAO.ServicioDAO;
@@ -8,8 +7,8 @@ import Modelo.POJO.Cliente;
 import Modelo.POJO.EquipoComputo;
 import Modelo.POJO.Refaccion;
 import Modelo.POJO.Servicio;
-import Utilidades.Utilidades;
-import java.io.IOException;
+import Modelo.POJO.TipoServicio;
+import Modelo.DAO.TipoServicioDAO;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -37,8 +36,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
+
 
 public class FXMLRegistrarMantenimientoController implements Initializable {
     
@@ -52,10 +50,6 @@ public class FXMLRegistrarMantenimientoController implements Initializable {
     private TableColumn tcNombre,tcCorreoElectronico,tcNumeroTelefono;
     @FXML
     private TableColumn tcIDEquipoComputo;
-    @FXML
-    private Button btAceptar;
-    @FXML
-    private TextArea taDescripcionDiagnostico;
     @FXML
     private TextArea taDescripcionEquipo;
     @FXML
@@ -74,11 +68,23 @@ public class FXMLRegistrarMantenimientoController implements Initializable {
     private ObservableList<Cliente> listaClientes;
     @FXML
     private ObservableList<Refaccion> listaRefacciones;
+    @FXML
+    private  Button btAceptar;
+  @FXML
+    private TextArea taDescripcionDiagnostico;
+   @FXML
+  private TextField tfTipoMantenimineto;
+
 
     
     
+
+    
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
+public void initialize(URL url, ResourceBundle rb) {
+
+    btAceptar.setOnAction(this::cargarDescripcionDiagnostico);
+  
         configurarTablaClienteEquipo();
         cargarTablaClienteEquipo();
         buscarCliente();
@@ -166,24 +172,66 @@ public void cargarTablaClienteEquipo() {
         }
     }
 
-     
+ 
 
-/*@FXML
-private void cargarTablaClienteEquipo(ActionEvent event) {
-    Servicio servicioSeleccionado = tvClienteEquipo.getSelectionModel().getSelectedItem();
+
+/*
+@FXML
+private void cargarTablaClienteEquipo(ActionEvent event) throws SQLException {
+    Cliente servicioSeleccionado = tvClienteEquipo.getSelectionModel().getSelectedItem();
 
     if (servicioSeleccionado != null) {
-        try {
-            // Obtener el servicio asociado al cliente
-            Servicio servicio = ServicioDAO.obtenerDiagnosticoPorEquipoComputo(servicioSeleccionado.getIdEquipoComputo());
+        // Obtener el servicio asociado al cliente
+        Servicio servicio = ServicioDAO.obtenerDiagnosticoPorEquipoComputo(servicioSeleccionado.getIdEquipoComputo());
+        if (servicio != null) {
+            // Mostrar la descripción del diagnóstico en el TextArea
+            String descripcionDiagnostico = servicio.getDescripcionDiagnostico();
+            taDescripcionDiagnostico.setText(descripcionDiagnostico);
+        } else {
+            // No se encontró un servicio asociado al cliente
+            taDescripcionDiagnostico.setText("");
+        }
+    }
+}*/
 
-            if (servicio != null) {
-                // Mostrar la descripción del diagnóstico en el TextArea
-                String descripcionDiagnostico = servicio.getDescripcionDiagnostico();
-                taDescripcionDiagnostico.setText(descripcionDiagnostico);
+    private void cargarDescripcionDiagnostico(ActionEvent event) {
+    Cliente clienteSeleccionado = tvClienteEquipo.getSelectionModel().getSelectedItem();
+
+    if (clienteSeleccionado != null) {
+        try {
+            // Obtener el equipo de cómputo asociado al cliente
+            EquipoComputo equipoComputo = EquipoComputoDAO.obtenerEquipoPorCliente(clienteSeleccionado.getIdEquipoComputo());
+            if (equipoComputo != null) {
+                // Obtener el servicio asociado al equipo de cómputo
+                Servicio servicio = ServicioDAO.obtenerDiagnosticoPorEquipoComputo(equipoComputo.getIdEquipoComputo());
+                if (servicio != null) {
+                    // Mostrar la descripción del diagnóstico en el TextArea
+                    String descripcionDiagnostico = servicio.getDescripcionDiagnostico();
+                    taDescripcionDiagnostico.setText(descripcionDiagnostico);
+                    
+                    // Obtener el tipo de servicio
+                    TipoServicio tipoServicio = TipoServicioDAO.obtenerTipoServicio(servicio.getIdTipoServicio());
+                    if (tipoServicio != null) {
+                        // Mostrar el tipo de servicio en el TextField
+                          tfTipoMantenimineto.setText(tipoServicio.getTipoServicio());
+                    } else {
+    // No se encontró el tipo de servicio
+    tfTipoMantenimineto.setText("");
+}
+                } else {
+                    // No se encontró un servicio asociado al equipo de cómputo
+                    taDescripcionDiagnostico.setText("");
+                    tfTipoMantenimineto.setText("");
+                }
+                // Mostrar la descripción del equipo en el TextArea
+                String descripcionEquipo = equipoComputo.getDescripcionEquipo();
+                taDescripcionEquipo.setText(descripcionEquipo);
+
             } else {
-                // No se encontró un servicio asociado al cliente
+                // No se encontró un equipo de cómputo asociado al cliente
                 taDescripcionDiagnostico.setText("");
+                taDescripcionEquipo.setText("");
+                tfTipoMantenimineto.setText("");
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -191,7 +239,8 @@ private void cargarTablaClienteEquipo(ActionEvent event) {
     }
 }
 
-*/
+
+
 
     
     }
