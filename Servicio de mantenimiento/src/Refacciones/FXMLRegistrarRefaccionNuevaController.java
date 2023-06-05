@@ -53,25 +53,23 @@ public class FXMLRegistrarRefaccionNuevaController implements Initializable {
 
     @FXML
     private void clicBtnRegistrar(ActionEvent event) {
-        if(!hayCamposVacios()){
-            if(!hayCamposInvalidos()){
-                Refaccion refaccionNueva = new Refaccion();
-                refaccionNueva.setNombreRefaccion(tfNombre.getText());
-                refaccionNueva.setPrecioCosto(Double.parseDouble(tfPrecio.getText()));
-                refaccionNueva.setUnidades(Integer.parseInt(tfUnidades.getText()));
-                refaccionNueva.setProveedor(tfProveedor.getText());
+        if(!hayCamposInvalidos()){
+            Refaccion refaccionNueva = new Refaccion();
+            refaccionNueva.setNombreRefaccion(tfNombre.getText());
+            refaccionNueva.setPrecioCosto(Double.parseDouble(tfPrecio.getText()));
+            refaccionNueva.setUnidades(Integer.parseInt(tfUnidades.getText()));
+            refaccionNueva.setProveedor(tfProveedor.getText());
 
-                try {
-                    if(RefaccionDAO.registrarRefaccion(refaccionNueva)){
-                        Utilidades.mostrarAlertaSimple("Éxito", "Se registró la nueva refacción con éxito", Alert.AlertType.INFORMATION);
-                        cerrarVentana();
-                    }else{
-                        Utilidades.mostrarAlertaSimple("Error", "No hay conexión a la base de datos. Inténtelo más tarde", Alert.AlertType.ERROR);
-                    }
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }    
-            }                  
+            try {
+                if(RefaccionDAO.registrarRefaccion(refaccionNueva)){
+                    Utilidades.mostrarAlertaSimple("Éxito", "Se registró la nueva refacción con éxito", Alert.AlertType.INFORMATION);
+                    cerrarVentana();
+                }else{
+                    Utilidades.mostrarAlertaSimple("Error", "No hay conexión a la base de datos. Inténtelo más tarde", Alert.AlertType.ERROR);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }                      
         }        
     }
 
@@ -81,13 +79,13 @@ public class FXMLRegistrarRefaccionNuevaController implements Initializable {
         stage.close();
     }
     
-    private boolean hayCamposVacios(){
-        boolean camposVacios = false;
+    private boolean hayCamposInvalidos(){
+        boolean camposInvalidos = false;
         
         if(tfNombre.getText().isEmpty()){
             lbNombreError.setText("Información faltante");
             tfNombre.setStyle("-fx-border-color: red");
-            camposVacios = true;
+            camposInvalidos = true;
         }else{
             lbNombreError.setText("");
             tfNombre.setStyle("");
@@ -96,52 +94,38 @@ public class FXMLRegistrarRefaccionNuevaController implements Initializable {
         if(tfPrecio.getText().isEmpty()){
             lbPrecioError.setText("Información faltante");
             tfPrecio.setStyle("-fx-border-color: red");
-            camposVacios = true;
         }else{
-            lbPrecioError.setText("");
-            tfPrecio.setStyle("");
+            if(!esDouble(tfPrecio.getText())){
+                lbPrecioError.setText("Tipo de dato incorrecto");
+                tfPrecio.setStyle("-fx-border-color: red");
+                camposInvalidos = true;
+            }else{
+                lbPrecioError.setText("");
+                tfPrecio.setStyle("");
+            }
         }
         
         if(tfUnidades.getText().isEmpty()){
             lbUnidadesError.setText("Información faltante");
             tfUnidades.setStyle("-fx-border-color: red");
-            camposVacios = true;
         }else{
-            lbUnidadesError.setText("");
-            tfUnidades.setStyle("");
+            if(!esNumerico(tfUnidades.getText())){
+            lbUnidadesError.setText("Tipo de dato incorrecto");
+            tfUnidades.setStyle("-fx-border-color: red");
+            camposInvalidos = true;
+            }else{
+                lbUnidadesError.setText("");
+                tfUnidades.setStyle("");
+            }
         }
         
         if(tfProveedor.getText().isEmpty()){
             lbProveedorError.setText("Información faltante");
             tfProveedor.setStyle("-fx-border-color: red");
-            camposVacios = true;
+            camposInvalidos = true;
         }else{
             lbProveedorError.setText("");
             tfProveedor.setStyle("");
-        }
-        
-        return camposVacios;
-    }
-    
-    private boolean hayCamposInvalidos(){
-        boolean camposInvalidos = false;
-        
-        if(!esDouble(tfPrecio.getText())){
-            lbPrecioError.setText("Tipo de dato incorrecto");
-            tfPrecio.setStyle("-fx-border-color: red");
-            camposInvalidos = true;
-        }else{
-            lbPrecioError.setText("");
-            tfPrecio.setStyle("");
-        }
-        
-        if(!esNumerico(tfUnidades.getText())){
-            lbUnidadesError.setText("Tipo de dato incorrecto");
-            tfUnidades.setStyle("-fx-border-color: red");
-            camposInvalidos = true;
-        }else{
-            lbUnidadesError.setText("");
-            tfUnidades.setStyle("");
         }
         
         return camposInvalidos;
