@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="478.0" prefWidth="792.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Servicios.FXMLConsultarEstadoMantenimientoController">
+   <children>
+      <Pane prefHeight="67.0" prefWidth="792.0" style="-fx-background-color: #00519E;">
+         <children>
+            <Label fx:id="lbRegistrarMantenimiento" layoutX="176.0" layoutY="7.0" prefHeight="54.0" prefWidth="440.0" text="Consultar Mantenimiento" textFill="WHITE">
+               <font>
+                  <Font size="37.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <TextField fx:id="tfBuscarClienteEquipo" layoutX="184.0" layoutY="117.0" prefHeight="31.0" prefWidth="425.0" promptText="Introduzca nombre del cliente/equipo" />
+      <TableView fx:id="tvMantenimiento" layoutX="64.0" layoutY="184.0" prefHeight="193.0" prefWidth="665.0">
+         <columns>
+            <TableColumn fx:id="tcNombre" prefWidth="221.6666666666667" text="Nombre" />
+            <TableColumn fx:id="tcEquipo" prefWidth="221.6666666666667" text="Equipo de cómputo" />
+            <TableColumn fx:id="tcTipoMantenimiento" prefWidth="221.6666666666667" text="Tipo de mantenimiento" />
+         </columns>
+      </TableView>
+      <Button fx:id="btCancelar" layoutX="652.0" layoutY="398.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="77.0" style="-fx-background-color: #FF0000;" text="Cancelar" textFill="WHITE" />
+      <Button fx:id="btVisualizarMantenimiento" layoutX="64.0" layoutY="398.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="153.0" style="-fx-background-color: #00519E;" text="Visualizar mantenimiento" textFill="WHITE" />
+   </children>
+</AnchorPane>

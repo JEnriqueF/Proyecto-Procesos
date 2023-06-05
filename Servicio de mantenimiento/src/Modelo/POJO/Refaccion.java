@@ -21,6 +21,12 @@ public class Refaccion {
         this.idRefaccion = idRefaccion;
     }
 
+ public Refaccion(String nombreRefaccion, int unidades) {
+    this.nombreRefaccion = nombreRefaccion;
+    this.unidades = unidades;
+}
+
+
     public String getNombreRefaccion() {
         return nombreRefaccion;
     }
@@ -60,4 +66,11 @@ public class Refaccion {
     public void setIdRefaccion(int idRefaccion) {
         this.idRefaccion = idRefaccion;
     }
+
+
+
+
+  public void setUnidadesAlmacenadas(int cantidad) {
+    this.unidades = cantidad;
+}
 }
