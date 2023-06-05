@@ -32,19 +32,12 @@
             <TableColumn fx:id="tcCorreoElectronico" prefWidth="228.0" text="Correo electrónico" />
          </columns>
       </TableView>
-      <Button fx:id="btAceptar" layoutX="661.0" layoutY="263.0" mnemonicParsing="false" onAction="#cargarTablaClienteEquipo" prefHeight="25.0" prefWidth="68.0" style="-fx-background-color: #30FF24;" text="Aceptar" />
+      <Button fx:id="btAceptar" layoutX="652.0" layoutY="263.0" mnemonicParsing="false" onAction="#cargarDescripcionDiagnostico" prefHeight="31.0" prefWidth="77.0" style="-fx-background-color: #30FF24;" text="Aceptar" />
+
       <TextArea fx:id="taDescripcionDiagnostico" layoutX="64.0" layoutY="305.0" prefHeight="86.0" prefWidth="664.0" />
       <Label layoutX="62.0" layoutY="288.0" text="Descripción del diagnóstico" />
       <TextArea fx:id="taDescripcionEquipo" layoutX="65.0" layoutY="416.0" prefHeight="67.0" prefWidth="334.0" />
       <Label layoutX="65.0" layoutY="399.0" text="Descripción del equipo" />
-      <TextField fx:id="tfBuscarRefaccion" layoutX="252.0" layoutY="540.0" prefHeight="31.0" prefWidth="308.0" promptText="Introduzca nombre de la refacción" />
-      <TableView fx:id="tvRefacciones" layoutX="64.0" layoutY="596.0" prefHeight="121.0" prefWidth="665.0">
-         <columns>
-            <TableColumn fx:id="tcRefaccion" prefWidth="365.0" text="Refacción" />
-            <TableColumn fx:id="tcCantidad" prefWidth="150.0" text="Cantidad" />
-            <TableColumn fx:id="tcSeleccionar" prefWidth="150.0" text="Seleccionar" />
-         </columns>
-      </TableView>
       <TextArea fx:id="taDescripcionMantenimiento" layoutX="61.0" layoutY="753.0" prefHeight="86.0" prefWidth="664.0" />
       <Label layoutX="61.0" layoutY="736.0" text="Descripción del mantenimiento" />
       <Label layoutX="504.0" layoutY="426.0" text="Tipo de mantenimiento" />
@@ -52,5 +45,15 @@
       <Button fx:id="btFinalizarMantenimiento" layoutX="232.0" layoutY="855.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="153.0" style="-fx-background-color: #00519E;" text="Finalizar mantenimiento" textFill="WHITE" />
       <Button fx:id="btCancelar" layoutX="648.0" layoutY="855.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="77.0" style="-fx-background-color: #FF0000;" text="Cancelar" textFill="WHITE" />
       <TextField fx:id="tfTipoMantenimineto" layoutX="504.0" layoutY="452.0" prefHeight="17.0" prefWidth="221.0" />
+      <TextField fx:id="tfUnidades" layoutX="418.0" layoutY="523.0" prefHeight="31.0" prefWidth="221.0" />
+      <ComboBox fx:id="cbRefacciones" layoutX="67.0" layoutY="523.0" prefHeight="31.0" prefWidth="334.0" />
+      <Label layoutX="418.0" layoutY="502.0" text="Unidades" />
+      <TableView fx:id="tvRefacciones" layoutX="65.0" layoutY="581.0" prefHeight="147.0" prefWidth="664.0">
+        <columns>
+          <TableColumn fx:id="tcRefaccion" prefWidth="555.0" text="Refacciones" />
+          <TableColumn fx:id="tcUnidades" prefWidth="107.0" text="Unidades" />
+        </columns>
+      </TableView>
+      <Button fx:id="btAñadir" layoutX="648.0" layoutY="523.0" mnemonicParsing="false" onAction="#guardarRefaccion" prefHeight="31.0" prefWidth="77.0" style="-fx-background-color: #30FF24;" text="Añadir" />
    </children>
 </AnchorPane>
