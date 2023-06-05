@@ -93,24 +93,21 @@ public class ServicioDAO {
 
  
     
-public static Servicio obtenerDiagnosticoPorEquipoComputo(int idEquipoComputo) throws SQLException {
+public static Servicio obtenerDiagnosticoPorEquipoComputo(String descripcionEquipo) throws SQLException {
     Servicio servicio = null;
-String consulta = "SELECT servicio.idServicio, servicio.descripcionDiagnostico " +
-                  "FROM servicio " +
-                  "JOIN equipocomputo ON servicio.idEquipoComputo = equipocomputo.idEquipoComputo " +
-                  "WHERE equipocomputo.idEquipoComputo = ?";
+    String consulta = "SELECT s.descripcionDiagnostico " +
+                      "FROM servicio s " +
+                      "JOIN equipocomputo e ON s.idEquipoComputo = e.idEquipoComputo " +
+                      "WHERE e.descripcionEquipo = ?";
 
-                   
-    
     try (Connection conexionBD = ConexionBaseDatos.abrirConexionBaseDatos();
          PreparedStatement consultaDiagnostico = conexionBD.prepareStatement(consulta)) {
 
-        consultaDiagnostico.setInt(1, idEquipoComputo);
+        consultaDiagnostico.setString(1, descripcionEquipo);
         ResultSet resultadoConsulta = consultaDiagnostico.executeQuery();
 
         if (resultadoConsulta.next()) {
             servicio = new Servicio();
-            servicio.setIdServicio(resultadoConsulta.getInt("idServicio"));
             servicio.setDescripcionDiagnostico(resultadoConsulta.getString("descripcionDiagnostico"));
             // Establecer los demás atributos del objeto Servicio según tu estructura de datos
         }
@@ -121,25 +118,62 @@ String consulta = "SELECT servicio.idServicio, servicio.descripcionDiagnostico "
 }
 
 
-    public static String obtenerTipoMantenimientoPorEquipoComputo(int idEquipoComputo) throws SQLException {
-        String tipoMantenimiento = null;
-        String consulta = "SELECT tipomantenimiento FROM equipocomputo WHERE idEquipoComputo = ?";
+ public static String obtenerTipoMantenimientoPorEquipoComputo(int idEquipoComputo) throws SQLException {
+    String tipoMantenimiento = null;
+    String consulta = "SELECT tipomantenimiento FROM equipocomputo WHERE idequipocomputo = ?";
 
-        try (Connection conexionBD = ConexionBaseDatos.abrirConexionBaseDatos();
-             PreparedStatement consultaTipoMantenimiento = conexionBD.prepareStatement(consulta)) {
+    try (Connection conexionBD = ConexionBaseDatos.abrirConexionBaseDatos();
+         PreparedStatement consultaTipoMantenimiento = conexionBD.prepareStatement(consulta)) {
 
-            consultaTipoMantenimiento.setInt(1, idEquipoComputo);
-            ResultSet resultadoConsulta = consultaTipoMantenimiento.executeQuery();
+        consultaTipoMantenimiento.setInt(1, idEquipoComputo);
+        ResultSet resultadoConsulta = consultaTipoMantenimiento.executeQuery();
+
+        if (resultadoConsulta.next()) {
+            tipoMantenimiento = resultadoConsulta.getString("tipomantenimiento");
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return tipoMantenimiento;
+}
+
+    
+    
+   public static Servicio obtenerServicioPorId(int idEquipoComputo) throws SQLException {
+    Servicio servicio = null;
+    Connection conexionBD = ConexionBaseDatos.abrirConexionBaseDatos();
+
+    if (conexionBD != null) {
+        try {
+            String consulta = "SELECT * FROM servicio WHERE idEquipoComputo = ?";
+            PreparedStatement consultaServicio = conexionBD.prepareStatement(consulta);
+            consultaServicio.setInt(1, idEquipoComputo);
+            ResultSet resultadoConsulta = consultaServicio.executeQuery();
 
             if (resultadoConsulta.next()) {
-                tipoMantenimiento = resultadoConsulta.getString("tipomantenimiento");
+                servicio = new Servicio();
+                servicio.setIdServicio(resultadoConsulta.getInt("idServicio"));
+                servicio.setDescripcionDiagnostico(resultadoConsulta.getString("descripcionDiagnostico"));
+                servicio.setCotizacion(resultadoConsulta.getDouble("cotizacion"));
+                servicio.setEstadoServicio(resultadoConsulta.getString("estadoServicio"));
+                servicio.setMontoTotal(resultadoConsulta.getDouble("montoTotal"));
+                servicio.setIdTipoServicio(resultadoConsulta.getInt("idTipoServicio"));
+                servicio.setIdCliente(resultadoConsulta.getInt("idCliente"));
+                servicio.setIdEquipoComputo(resultadoConsulta.getInt("idEquipoComputo"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            conexionBD.close();
         }
-
-        return tipoMantenimiento;
+    } else {
+        Utilidades.mostrarAlertaSimple("Error", "Falló la conexión con la base de datos.\nInténtelo más tarde", Alert.AlertType.ERROR);
     }
+
+    return servicio;
+}
+
 }
 
     

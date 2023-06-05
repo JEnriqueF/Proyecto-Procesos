@@ -99,5 +99,35 @@ public static EquipoComputo obtenerEquipoPorCliente(int idEquipoComputo) throws 
     
     return equipo;
 }
+public static String obtenerDescripcionEquipo(int idEquipoComputo) throws SQLException {
+    Connection conexionBD = ConexionBaseDatos.abrirConexionBaseDatos();
+    String descripcionEquipo = null;
+
+    if (conexionBD != null) {
+        try {
+            String consulta = "SELECT descripcionEquipo FROM equipocomputo WHERE idEquipoComputo = ?";
+            PreparedStatement prepararSentencia = conexionBD.prepareStatement(consulta);
+            prepararSentencia.setInt(1, idEquipoComputo);
+            ResultSet resultado = prepararSentencia.executeQuery();
+
+            if (resultado.next()) {
+                descripcionEquipo = resultado.getString("descripcionEquipo");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            conexionBD.close();
+        }
+    } else {
+        Utilidades.mostrarAlertaSimple("Error", "Falló la conexión con la base de datos.\nInténtelo más tarde",
+                Alert.AlertType.ERROR);
+    }
+
+    return descripcionEquipo;
+}
+
+
+
+
 
 }
