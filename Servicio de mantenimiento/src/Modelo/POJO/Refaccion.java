@@ -60,4 +60,8 @@ public class Refaccion {
     public void setIdRefaccion(int idRefaccion) {
         this.idRefaccion = idRefaccion;
     }
+    
+    public String toString(){
+        return nombreRefaccion;
+    }
 }

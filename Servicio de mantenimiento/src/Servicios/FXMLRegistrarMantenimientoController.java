@@ -4,10 +4,12 @@ import Modelo.DAO.ClienteDAO;
 import Modelo.DAO.EquipoComputoDAO;
 import Modelo.DAO.RefaccionDAO;
 import Modelo.DAO.ServicioDAO;
+import Modelo.DAO.TipoServicioDAO;
 import Modelo.POJO.Cliente;
 import Modelo.POJO.EquipoComputo;
 import Modelo.POJO.Refaccion;
 import Modelo.POJO.Servicio;
+import Modelo.POJO.TipoServicio;
 import Utilidades.Utilidades;
 import java.io.IOException;
 import java.net.URL;
@@ -31,6 +33,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -58,23 +61,32 @@ public class FXMLRegistrarMantenimientoController implements Initializable {
     private TextArea taDescripcionDiagnostico;
     @FXML
     private TextArea taDescripcionEquipo;
-    @FXML
     private TextField tfBuscarRefaccion;
     @FXML
     private TableColumn tcRefaccion;
-    @FXML
     private TableColumn tcCantidad;
-    @FXML
-    private TableColumn tcSeleccionar;
     @FXML
     private TableView<Refaccion>tvRefacciones;
     @FXML
     private TextArea taDescripcionMantenimiento;  
-    @FXML
     private ObservableList<Cliente> listaClientes;
-    @FXML
     private ObservableList<Refaccion> listaRefacciones;
-
+    @FXML
+    private Label lbMenuPrincipal;
+    @FXML
+    private Button btGuardarMantenimiento;
+    @FXML
+    private Button btFinalizarMantenimiento;
+    @FXML
+    private Button btCancelar;
+    @FXML
+    private TextField tfTipoMantenimineto;
+    @FXML
+    private TextField tfUnidades;
+    @FXML
+    private ComboBox<Refaccion> cbRefacciones;
+    @FXML
+    private TableColumn tcUnidades;
     
     
     @Override
@@ -83,11 +95,23 @@ public class FXMLRegistrarMantenimientoController implements Initializable {
         cargarTablaClienteEquipo();
         buscarCliente();
         configurarTablaRefaccion();
-        cargarTablaRefaccion();
-        buscarRefaccion();
+        cargarListaRefaccion();
+        //cargarTablaRefaccion();
+        //buscarRefaccion();
         
 }
 
+    
+    private void cargarListaRefaccion(){
+        listaRefacciones = FXCollections.observableArrayList();
+        try{
+            ArrayList<Refaccion> refaccionesBD = RefaccionDAO.obtenerRefacciones();
+            listaRefacciones.addAll(refaccionesBD);
+            cbRefacciones.setItems(listaRefacciones);
+        }catch(SQLException ex){
+            ex.printStackTrace();
+        }
+    }
 
 private void configurarTablaClienteEquipo() {
     tcNombre.setCellValueFactory(new PropertyValueFactory("nombre"));
@@ -96,7 +120,8 @@ private void configurarTablaClienteEquipo() {
     tcIDEquipoComputo.setCellValueFactory(new PropertyValueFactory("idEquipoComputo"));
 }
 
-public void cargarTablaClienteEquipo() {
+    @FXML
+    public void cargarTablaClienteEquipo() {
     try {
         listaClientes = FXCollections.observableArrayList();
         ArrayList<Cliente> clientesBD = ServicioDAO.obtenerClientesConEquipo();
@@ -132,9 +157,10 @@ public void cargarTablaClienteEquipo() {
 
    private void configurarTablaRefaccion() {
     tcRefaccion.setCellValueFactory(new PropertyValueFactory<>("nombreRefaccion"));
-    tcCantidad.setCellValueFactory(new PropertyValueFactory<>("unidades"));  
+    tcUnidades.setCellValueFactory(new PropertyValueFactory<>("unidades"));  
 }
 
+    @FXML
     private void cargarTablaRefaccion() {
             try{
             listaRefacciones = FXCollections.observableArrayList();
@@ -146,7 +172,11 @@ public void cargarTablaClienteEquipo() {
         }
     }
     
-    private void buscarRefaccion(){
+    private void verificarExistencia(){
+        
+    }
+    
+    /*private void buscarRefaccion(){
         if(listaRefacciones.size() > 0){
             FilteredList<Refaccion > filtroRefacciones = new FilteredList<>(listaRefacciones, p -> true);
             
@@ -164,7 +194,7 @@ public void cargarTablaClienteEquipo() {
             recursosFiltrados.comparatorProperty().bind(tvRefacciones.comparatorProperty());
             tvRefacciones.setItems(recursosFiltrados);
         }
-    }
+    }*/
 
      
 
