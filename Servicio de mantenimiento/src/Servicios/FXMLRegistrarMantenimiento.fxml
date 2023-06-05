@@ -32,7 +32,12 @@
             <TableColumn fx:id="tcCorreoElectronico" prefWidth="228.0" text="Correo electrónico" />
          </columns>
       </TableView>
+<<<<<<< HEAD
       <Button fx:id="btAceptar" layoutX="652.0" layoutY="263.0" mnemonicParsing="false" onAction="#cargarTablaClienteEquipo" prefHeight="31.0" prefWidth="77.0" style="-fx-background-color: #30FF24;" text="Aceptar" />
+=======
+      <Button fx:id="btAceptar" layoutX="652.0" layoutY="263.0" mnemonicParsing="false" onAction="#cargarDescripcionDiagnostico" prefHeight="31.0" prefWidth="77.0" style="-fx-background-color: #30FF24;" text="Aceptar" />
+
+>>>>>>> 66ee3da583e324017380cadeac1aeae27251cb39
       <TextArea fx:id="taDescripcionDiagnostico" layoutX="64.0" layoutY="305.0" prefHeight="86.0" prefWidth="664.0" />
       <Label layoutX="62.0" layoutY="288.0" text="Descripción del diagnóstico" />
       <TextArea fx:id="taDescripcionEquipo" layoutX="65.0" layoutY="416.0" prefHeight="67.0" prefWidth="334.0" />
@@ -53,6 +58,10 @@
           <TableColumn fx:id="tcUnidades" prefWidth="107.0" text="Unidades" />
         </columns>
       </TableView>
+<<<<<<< HEAD
       <Button layoutX="648.0" layoutY="523.0" mnemonicParsing="false" onAction="#cargarTablaRefaccion" prefHeight="31.0" prefWidth="77.0" style="-fx-background-color: #30FF24;" text="Añadir" />
+=======
+      <Button fx:id="btAñadir" layoutX="648.0" layoutY="523.0" mnemonicParsing="false" onAction="#guardarRefaccion" prefHeight="31.0" prefWidth="77.0" style="-fx-background-color: #30FF24;" text="Añadir" />
+>>>>>>> 66ee3da583e324017380cadeac1aeae27251cb39
    </children>
 </AnchorPane>

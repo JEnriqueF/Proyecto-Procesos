@@ -115,13 +115,10 @@ public class FXMLSolicitarDiagnosticoController implements Initializable {
     
     private void cargarListaTipoServicio(){
         listaTipoServicios = FXCollections.observableArrayList();
-        try{
-            ArrayList<TipoServicio> tipoServiciosBD = TipoServicioDAO.obtenerTipoServicio();
-            listaTipoServicios.addAll(tipoServiciosBD);
-            cbTipoServicioSugerido.setItems(listaTipoServicios);
-        }catch(SQLException ex){
-            ex.printStackTrace();
-        }
+        ArrayList<TipoServicio> tipoServiciosBD = null;
+        tipoServiciosBD = TipoServicioDAO.obtenerTipoServicio();
+        listaTipoServicios.addAll(tipoServiciosBD);
+        cbTipoServicioSugerido.setItems(listaTipoServicios);
     }
     
     private void actualizarTotal(String cotizacionStr, TipoServicio tipoServicio, TextField tfTotal) {
@@ -135,7 +132,7 @@ public class FXMLSolicitarDiagnosticoController implements Initializable {
     }
     
     private void buscarCliente() {
-        if(listaClientes.size() > 0){
+        if(!listaClientes.isEmpty()){
             FilteredList<Cliente> filtroClientes = new FilteredList<>(listaClientes, p -> true);
             
             tfBuscarCliente.textProperty().addListener(new ChangeListener<String>(){

@@ -4,6 +4,7 @@ public class Servicio {
     private int idServicio, idTipoServicio, idCliente, idEquipoComputo, idPersonal;
     private String descripcionDiagnostico, descripcionMantenimiento, estadoServicio;
     private double cotizacion, montoTotal;
+    private String descripcionEquipo;
     
     public Servicio(){
     }
@@ -107,6 +108,31 @@ public class Servicio {
     public void setMontoTotal(double montoTotal) {
         this.montoTotal = montoTotal;
     }
+
+ public String getTipoServicio() {
+    String tipoServicio = "";
+
+    // Lógica para obtener el tipo de servicio
+    // Puede ser una consulta a la base de datos, una búsqueda en una lista, etc.
+
+    return tipoServicio;
+}
+
+
+ public void setTipoServicio(String tipoServicio) {
+    // Lógica para establecer el tipo de servicio
+    // Puede ser asignar el valor a una variable de instancia, actualizar una columna en la base de datos, etc.
+}
+
+
+  public void setDescripcionEquipo(String descripcionEquipo) {
+    this.descripcionEquipo = descripcionEquipo;
+}
+
+    public String getDescripcionEquipo() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
 
 
 }

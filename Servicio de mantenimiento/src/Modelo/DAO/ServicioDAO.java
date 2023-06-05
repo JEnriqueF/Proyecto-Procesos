@@ -53,6 +53,53 @@ public class ServicioDAO {
         return respuesta;
     }
   
+   
+    public static String obtenerDescripcionEquipo(int idEquipoComputo) throws SQLException {
+        String descripcionEquipo = null;
+        String consulta = "SELECT descripcionEquipo FROM equipocomputo WHERE idEquipoComputo = ?";
+        
+        try (Connection conexionBD = ConexionBaseDatos.abrirConexionBaseDatos();
+             PreparedStatement consultaDescripcion = conexionBD.prepareStatement(consulta)) {
+
+            consultaDescripcion.setInt(1, idEquipoComputo);
+            ResultSet resultadoConsulta = consultaDescripcion.executeQuery();
+
+            if (resultadoConsulta.next()) {
+                descripcionEquipo = resultadoConsulta.getString("descripcionEquipo");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return descripcionEquipo;
+    }
+
+    public static Servicio obtenerServicioPorEquipoComputo(String descripcionEquipo) throws SQLException {
+        Servicio servicio = null;
+        String consulta = "SELECT s.descripcionDiagnostico, s.idTipoServicio " +
+                          "FROM servicio s " +
+                          "JOIN equipocomputo e ON s.idEquipoComputo = e.idEquipoComputo " +
+                          "WHERE e.descripcionEquipo = ?";
+
+        try (Connection conexionBD = ConexionBaseDatos.abrirConexionBaseDatos();
+             PreparedStatement consultaServicio = conexionBD.prepareStatement(consulta)) {
+
+            consultaServicio.setString(1, descripcionEquipo);
+            ResultSet resultadoConsulta = consultaServicio.executeQuery();
+
+            if (resultadoConsulta.next()) {
+                servicio = new Servicio();
+                servicio.setDescripcionDiagnostico(resultadoConsulta.getString("descripcionDiagnostico"));
+                servicio.setIdTipoServicio(resultadoConsulta.getInt("idTipoServicio"));
+                // Establecer los demás atributos del objeto
+          }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return servicio;
+    }
+
     
     public static ArrayList<Cliente> obtenerClientesConEquipo() throws SQLException {
     ArrayList<Cliente> clientes = new ArrayList<>();
@@ -89,48 +136,73 @@ public class ServicioDAO {
     return clientes;
 }
 
+ 
     
-    
-    
-
-    
-   /*public static Servicio obtenerDiagnosticoPorEquipoComputo(int idEquipoComputo) throws SQLException {
-    Connection conn = null;
-    PreparedStatement stmt = null;
-    ResultSet rs = null;
+public static Servicio obtenerDiagnosticoPorEquipoComputo(String descripcionEquipo) throws SQLException {
     Servicio servicio = null;
+    String consulta = "SELECT s.descripcionDiagnostico " +
+                      "FROM servicio s " +
+                      "JOIN equipocomputo e ON s.idEquipoComputo = e.idEquipoComputo " +
+                      "WHERE e.descripcionEquipo = ?";
 
-    try {
-        conn = ConexionBaseDatos.abrirConexionBaseDatos();
-        String query = "SELECT descripcionDiagnostico FROM Servicio WHERE idEquipoComputo = ?";
-        stmt = conn.prepareStatement(query);
-        stmt.setInt(1, idEquipoComputo);
-        rs = stmt.executeQuery();
+    try (Connection conexionBD = ConexionBaseDatos.abrirConexionBaseDatos();
+         PreparedStatement consultaDiagnostico = conexionBD.prepareStatement(consulta)) {
 
-        if (rs.next()) {
-            String descripcionDiagnostico = rs.getString("descripcionDiagnostico");
+        consultaDiagnostico.setString(1, descripcionEquipo);
+        ResultSet resultadoConsulta = consultaDiagnostico.executeQuery();
+
+        if (resultadoConsulta.next()) {
             servicio = new Servicio();
-            servicio.setDescripcionDiagnostico(descripcionDiagnostico);
+            servicio.setDescripcionDiagnostico(resultadoConsulta.getString("descripcionDiagnostico"));
+            // Establecer los demás atributos del objeto Servicio según tu estructura de datos
         }
-    } finally {
-        if (rs != null) {
-            rs.close();
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return servicio;
+}
+
+
+
+    
+    
+   public static Servicio obtenerServicioPorId(int idEquipoComputo) throws SQLException {
+    Servicio servicio = null;
+    Connection conexionBD = ConexionBaseDatos.abrirConexionBaseDatos();
+
+    if (conexionBD != null) {
+        try {
+            String consulta = "SELECT * FROM servicio WHERE idEquipoComputo = ?";
+            PreparedStatement consultaServicio = conexionBD.prepareStatement(consulta);
+            consultaServicio.setInt(1, idEquipoComputo);
+            ResultSet resultadoConsulta = consultaServicio.executeQuery();
+
+            if (resultadoConsulta.next()) {
+                servicio = new Servicio();
+                servicio.setIdServicio(resultadoConsulta.getInt("idServicio"));
+                servicio.setDescripcionDiagnostico(resultadoConsulta.getString("descripcionDiagnostico"));
+                servicio.setCotizacion(resultadoConsulta.getDouble("cotizacion"));
+                servicio.setEstadoServicio(resultadoConsulta.getString("estadoServicio"));
+                servicio.setMontoTotal(resultadoConsulta.getDouble("montoTotal"));
+                servicio.setIdTipoServicio(resultadoConsulta.getInt("idTipoServicio"));
+                servicio.setIdCliente(resultadoConsulta.getInt("idCliente"));
+                servicio.setIdEquipoComputo(resultadoConsulta.getInt("idEquipoComputo"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            conexionBD.close();
         }
-        if (stmt != null) {
-            stmt.close();
-        }
-        if (conn != null) {
-            conn.close();
-        }
+    } else {
+        Utilidades.mostrarAlertaSimple("Error", "Falló la conexión con la base de datos.\nInténtelo más tarde", Alert.AlertType.ERROR);
     }
 
     return servicio;
-}/*/
-
-
-
-    
-    
-    
-    
 }
+
+}
+
+    
+    
+    
+    

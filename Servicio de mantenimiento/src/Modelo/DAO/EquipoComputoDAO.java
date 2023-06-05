@@ -1,6 +1,7 @@
 package Modelo.DAO;
 
 import Modelo.ConexionBaseDatos;
+import Modelo.POJO.EquipoComputo;
 import Modelo.POJO.ResultadoOperacion;
 import Utilidades.Utilidades;
 import java.sql.Connection;
@@ -68,5 +69,65 @@ public class EquipoComputoDAO {
         }
         return equipoBD;
     }
+
+public static EquipoComputo obtenerEquipoPorCliente(int idEquipoComputo) throws SQLException {
+    Connection conexionBD = ConexionBaseDatos.abrirConexionBaseDatos();
+    EquipoComputo equipo = null;
     
+    if (conexionBD != null) {
+        try {
+            String consulta = "SELECT * FROM equipocomputo WHERE idEquipoComputo = ?";
+            PreparedStatement prepararSentencia = conexionBD.prepareStatement(consulta);
+            prepararSentencia.setInt(1, idEquipoComputo);
+            ResultSet resultado = prepararSentencia.executeQuery();
+            
+            if (resultado.next()) {
+                equipo = new EquipoComputo();
+                equipo.setIdEquipoComputo(resultado.getInt("idEquipoComputo"));
+                equipo.setDescripcionEquipo(resultado.getString("descripcionEquipo"));
+                // Asigna los demás atributos del equipo según la estructura de tu tabla
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            conexionBD.close();
+        }
+    } else {
+        Utilidades.mostrarAlertaSimple("Error", "Falló la conexión con la base de datos.\nInténtelo más tarde", 
+                Alert.AlertType.ERROR);
+    }
+    
+    return equipo;
+}
+public static String obtenerDescripcionEquipo(int idEquipoComputo) throws SQLException {
+    Connection conexionBD = ConexionBaseDatos.abrirConexionBaseDatos();
+    String descripcionEquipo = null;
+
+    if (conexionBD != null) {
+        try {
+            String consulta = "SELECT descripcionEquipo FROM equipocomputo WHERE idEquipoComputo = ?";
+            PreparedStatement prepararSentencia = conexionBD.prepareStatement(consulta);
+            prepararSentencia.setInt(1, idEquipoComputo);
+            ResultSet resultado = prepararSentencia.executeQuery();
+
+            if (resultado.next()) {
+                descripcionEquipo = resultado.getString("descripcionEquipo");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            conexionBD.close();
+        }
+    } else {
+        Utilidades.mostrarAlertaSimple("Error", "Falló la conexión con la base de datos.\nInténtelo más tarde",
+                Alert.AlertType.ERROR);
+    }
+
+    return descripcionEquipo;
+}
+
+
+
+
+
 }
