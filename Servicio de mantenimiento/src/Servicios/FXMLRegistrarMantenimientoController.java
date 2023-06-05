@@ -96,7 +96,7 @@ public class FXMLRegistrarMantenimientoController implements Initializable {
         buscarCliente();
         configurarTablaRefaccion();
         cargarListaRefaccion();
-        //cargarTablaRefaccion();
+        //cargarTablaRefaccion(null, 0);
         //buscarRefaccion();
         
 }
@@ -160,20 +160,18 @@ private void configurarTablaClienteEquipo() {
     tcUnidades.setCellValueFactory(new PropertyValueFactory<>("unidades"));  
 }
 
-    @FXML
-    private void cargarTablaRefaccion() {
-            try{
-            listaRefacciones = FXCollections.observableArrayList();
-            ArrayList<Refaccion> refaccionesBD = RefaccionDAO.obtenerRefacciones();
-            listaRefacciones.addAll(refaccionesBD);
-            tvRefacciones.setItems(listaRefacciones);
-        }catch(SQLException | NullPointerException e){
-            e.printStackTrace();
-        }
-    }
+    
     
     private void verificarExistencia(){
-        
+        try {
+            ArrayList<Refaccion> existen = RefaccionDAO.verificarExistencia(cbRefacciones.valueProperty().getValue().getIdRefaccion());
+            
+            if(existen != null){
+                cargarTablaRefacciones(cbRefacciones.valueProperty().getValue().getNombreRefaccion(), Integer.getInteger(tfUnidades.getText()));
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
     }
     
     /*private void buscarRefaccion(){
@@ -223,6 +221,37 @@ private void cargarTablaClienteEquipo(ActionEvent event) {
 
 */
 
+    @FXML
+    private void cargarTablaRefaccion(ActionEvent event) {
+        try{
+            verificarExistencia();
+            
+            /*Refaccion r = new Refaccion(nombreRefaccion, unidades);
+            tvRefacciones.getItems().addAll(r);*/
+            
+            /*listaRefacciones = FXCollections.observableArrayList();
+            ArrayList<Refaccion> refaccionesBD = RefaccionDAO.obtenerRefacciones();
+            listaRefacciones.addAll(refaccionesBD);
+            tvRefacciones.setItems(listaRefacciones);*/
+        }catch(NullPointerException e){
+            e.printStackTrace();
+        }
+    }
+
+    
+    private void cargarTablaRefacciones(String nombreRefaccion, int unidades) {
+        try{
+            Refaccion r = new Refaccion(nombreRefaccion, unidades);
+            tvRefacciones.getItems().addAll(r);
+            
+            /*listaRefacciones = FXCollections.observableArrayList();
+            ArrayList<Refaccion> refaccionesBD = RefaccionDAO.obtenerRefacciones();
+            listaRefacciones.addAll(refaccionesBD);
+            tvRefacciones.setItems(listaRefacciones);*/
+        }catch(NullPointerException e){
+            e.printStackTrace();
+        }
+    }
     
     }
 

@@ -7,12 +7,17 @@ package Modelo.POJO;
 public class Refaccion {
     private String nombreRefaccion, proveedor;
     private double precioCosto;
-    private int unidades, idRefaccion;
+    private int unidades, idRefaccion, unidadesPedidas;
 
     public Refaccion() {
         
     }
 
+    public Refaccion(String nombreRefaccion, int unidadesPedidas){
+        this.nombreRefaccion = nombreRefaccion;
+        this.unidadesPedidas = unidadesPedidas;
+    }
+    
     public Refaccion(String nombreRefaccion, String proveedor, double precioCosto, int unidades, int idRefaccion) {
         this.nombreRefaccion = nombreRefaccion;
         this.proveedor = proveedor;

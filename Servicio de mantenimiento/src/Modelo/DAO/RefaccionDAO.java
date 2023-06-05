@@ -96,4 +96,42 @@ public class RefaccionDAO {
         
         return seAgrego;
     }
+    
+    public static ArrayList<Refaccion> verificarExistencia(int idRefaccion) throws SQLException{
+        Connection conexionBD = ConexionBaseDatos.abrirConexionBaseDatos();
+        ArrayList<Refaccion> refaccionesBD = null;
+        
+        boolean existe = false;
+        
+        if(conexionBD != null){
+            try{
+                String consulta = "SELECT refaccion.nombreRefaccion, refaccion.unidades FROM refaccion WHERE refaccion.idRefaccion = ?";
+                
+                PreparedStatement prepararSentencia = conexionBD.prepareStatement(consulta);
+                prepararSentencia.setInt(1, idRefaccion);
+                ResultSet resultado = prepararSentencia.executeQuery();
+                
+                while(resultado.next()){
+                    Refaccion refaccionTemporal = new Refaccion();
+                    
+                    refaccionTemporal.setNombreRefaccion(resultado.getString("nombreRefaccion"));
+                    
+                    refaccionTemporal.setUnidades(resultado.getInt("unidades"));
+                    
+                    refaccionesBD.add(refaccionTemporal);
+                }
+                
+                //int filasAfectadas = ;
+                
+                /*if(filasAfectadas > 0){
+                    existe = true;
+                }*/
+            }catch(SQLException | NullPointerException e){
+                e.printStackTrace();
+            }finally{
+                conexionBD.close();
+            }
+        }
+        return refaccionesBD;
+    }
 }
