@@ -44,9 +44,9 @@ public class TipoServicioDAO {
     return tipoServicio;
 }
 
-    public static ArrayList<TipoServicio> obtenerTipoServicio() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+//    public static ArrayList<TipoServicio> obtenerTipoServicio() {
+//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+//    }
 
   
 

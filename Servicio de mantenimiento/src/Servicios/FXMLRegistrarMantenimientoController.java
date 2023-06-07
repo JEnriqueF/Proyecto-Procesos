@@ -59,7 +59,7 @@ public class FXMLRegistrarMantenimientoController implements Initializable {
     private TextArea taDescripcionEquipo;
     private TextField tfBuscarRefaccion;
     @FXML
-<<<<<<< HEAD
+
     private TableColumn tcRefaccion;
     private TableColumn tcCantidad;
     @FXML
@@ -86,33 +86,9 @@ public class FXMLRegistrarMantenimientoController implements Initializable {
     private TableColumn tcUnidades;
     
     
-=======
-    private TableColumn<Refaccion, String> tcRefaccion;
-    @FXML
-    private TableColumn<Refaccion, Integer> tcUnidades;
-    @FXML
-    private TableView<Refaccion> tvRefacciones;
-    @FXML
-    private TextArea taDescripcionMantenimiento;
-    @FXML
-    private Label lbMenuPrincipal;
-    @FXML
-    private Button btGuardarMantenimiento;
-    @FXML
-    private Button btFinalizarMantenimiento;
-    @FXML
-    private Button btCancelar;
-    @FXML
-    private TextField tfTipoMantenimineto;
-    @FXML
-    private TextField tfUnidades;
-    @FXML
-    private ComboBox<Refaccion> cbRefacciones;
+    
 
-    private ObservableList<Cliente> listaClientes;
-    private ObservableList<Refaccion> listaRefacciones;
 
->>>>>>> 66ee3da583e324017380cadeac1aeae27251cb39
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         configurarTablaClienteEquipo();
@@ -120,11 +96,10 @@ public class FXMLRegistrarMantenimientoController implements Initializable {
         buscarCliente();
         configurarTablaRefaccion();
         cargarListaRefaccion();
-<<<<<<< HEAD
+
         //cargarTablaRefaccion(null, 0);
         //buscarRefaccion();
         
-=======
     }
 
    private void cargarListaRefaccion() {
@@ -153,11 +128,11 @@ public class FXMLRegistrarMantenimientoController implements Initializable {
     }
 
     cbRefacciones.setItems(listaRefacciones);
->>>>>>> 66ee3da583e324017380cadeac1aeae27251cb39
+
 }
 
     
-    private void cargarListaRefaccion(){
+    /*private void cargarListaRefaccion(){
         listaRefacciones = FXCollections.observableArrayList();
         try{
             ArrayList<Refaccion> refaccionesBD = RefaccionDAO.obtenerRefacciones();
@@ -166,7 +141,7 @@ public class FXMLRegistrarMantenimientoController implements Initializable {
         }catch(SQLException ex){
             ex.printStackTrace();
         }
-    }
+    }*/
 
 @FXML
 private void guardarRefaccion(ActionEvent event) {
@@ -220,8 +195,8 @@ private void configurarTablaClienteEquipo() {
     tcIDEquipoComputo.setCellValueFactory(new PropertyValueFactory("idEquipoComputo"));
 }
 
-<<<<<<< HEAD
-=======
+
+
  @FXML
 private void agregarRefaccion(ActionEvent event) {
     Refaccion refaccionSeleccionada = cbRefacciones.getValue();
@@ -240,7 +215,7 @@ private void agregarRefaccion(ActionEvent event) {
 
 
 
->>>>>>> 66ee3da583e324017380cadeac1aeae27251cb39
+
     @FXML
     public void cargarTablaClienteEquipo() {
     try {
@@ -277,7 +252,7 @@ private void agregarRefaccion(ActionEvent event) {
        cbRefacciones.setItems(listaRefacciones);
     tcRefaccion.setCellValueFactory(new PropertyValueFactory<>("nombreRefaccion"));
     tcUnidades.setCellValueFactory(new PropertyValueFactory<>("unidades"));  
-<<<<<<< HEAD
+
 }
 
     
@@ -292,7 +267,7 @@ private void agregarRefaccion(ActionEvent event) {
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-=======
+
     
 }
 @FXML
@@ -304,7 +279,7 @@ private void cargarTablaRefaccion() {
         tvRefacciones.setItems(listaRefacciones);
 
         // Configurar la celda de la columna de nombre de refacción para mostrar el nombre utilizando una función de celda personalizada
-        tcRefaccion.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNombreRefaccion()));
+        //tcRefaccion.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNombreRefaccion()));
         tcUnidades.setCellValueFactory(new PropertyValueFactory<>("unidades"));
 
     } catch (SQLException | NullPointerException e) {
@@ -313,10 +288,7 @@ private void cargarTablaRefaccion() {
 }
 
     
-    private void verificarExistencia(){
-        
->>>>>>> 66ee3da583e324017380cadeac1aeae27251cb39
-    }
+    
     
     /*private void buscarRefaccion(){
         if(listaRefacciones.size() > 0){
