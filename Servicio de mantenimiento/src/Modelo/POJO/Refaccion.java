@@ -77,10 +77,10 @@ public class Refaccion {
     }
 
 
-
-
   public void setUnidadesAlmacenadas(int cantidad) {
     this.unidades = cantidad;
 }
+
+
 
 }

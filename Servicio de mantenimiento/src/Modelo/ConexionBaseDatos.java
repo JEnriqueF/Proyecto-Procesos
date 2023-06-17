@@ -5,14 +5,14 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class ConexionBaseDatos {
-    private static String CONTROLADOR = "com.mysql.jdbc.Driver";
-    private static String BASEDATOS = "mantenimientoprocesos";
-    private static String IP = "localhost";
-    private static String PUERTO = "3306";
-    private static String URL = "jdbc:mysql://" + IP + ":" + PUERTO + "/" + BASEDATOS + "?allowPublicKeyRetrieval=true&useSSL=false";
+    private static final String CONTROLADOR = "com.mysql.jdbc.Driver";
+    private static final String BASEDATOS = "mantenimientoprocesos";
+    private static final String IP = "localhost";
+    private static final String PUERTO = "3306";
+    private static final String URL = "jdbc:mysql://" + IP + ":" + PUERTO + "/" + BASEDATOS + "?allowPublicKeyRetrieval=true&useSSL=false";
     
-    private static String USUARIO = "ProcesosIS";
-    private static String CONTRASENIA = "procesosIS";
+    private static final String USUARIO = "ProcesosIS";
+    private static final String CONTRASENIA = "procesosIS";
     
     public static Connection abrirConexionBaseDatos(){
         Connection dbConnection = null;
