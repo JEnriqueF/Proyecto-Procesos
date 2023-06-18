@@ -1,26 +1,41 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package Servicios;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.stage.Stage;
 
-/**
- * FXML Controller class
- *
- * @author nar_l
- */
+
 public class FXMLConsultarEstadoMantenimientoController implements Initializable {
 
-    /**
-     * Initializes the controller class.
-     */
+
+   @FXML
+   private Button btCancelar;
+    
+    
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+     
     }    
     
+    
+    
+    
+    
+    
+    
+@FXML
+private void cancelar(ActionEvent event) {
+    Node sourceNode = (Node) event.getSource();
+    
+    Stage currentStage = (Stage) sourceNode.getScene().getWindow();
+    currentStage.close();
 }
+
+}
+

@@ -26,7 +26,7 @@
             <TableColumn fx:id="tcTipoMantenimiento" prefWidth="221.6666666666667" text="Tipo de mantenimiento" />
          </columns>
       </TableView>
-      <Button fx:id="btCancelar" layoutX="652.0" layoutY="398.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="77.0" style="-fx-background-color: #FF0000;" text="Cancelar" textFill="WHITE" />
+      <Button fx:id="btCancelar" layoutX="652.0" layoutY="398.0" mnemonicParsing="false" onAction="#cancelar"  prefHeight="31.0" prefWidth="77.0" style="-fx-background-color: #FF0000;" text="Cancelar" textFill="WHITE" />
       <Button fx:id="btVisualizarMantenimiento" layoutX="64.0" layoutY="398.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="153.0" style="-fx-background-color: #00519E;" text="Visualizar mantenimiento" textFill="WHITE" />
    </children>
 </AnchorPane>

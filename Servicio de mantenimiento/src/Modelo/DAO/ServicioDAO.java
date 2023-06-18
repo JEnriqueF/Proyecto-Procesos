@@ -2,7 +2,9 @@ package Modelo.DAO;
 
 import Modelo.ConexionBaseDatos;
 import Modelo.POJO.Cliente;
-import Modelo.POJO.EquipoComputo;
+import Modelo.POJO.Refaccion;
+import java.sql.Statement;
+
 import Modelo.POJO.ResultadoOperacion;
 import Modelo.POJO.Servicio;
 import Utilidades.Utilidades;
@@ -12,6 +14,7 @@ import java.sql.SQLException;
 import javafx.scene.control.Alert;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import javafx.collections.ObservableList;
 
 public class ServicioDAO {
     public static ResultadoOperacion registrarDiagnostico(String descripcionDiagnostico, double cotizacion, double montoTotal, 
@@ -199,10 +202,61 @@ public static Servicio obtenerDiagnosticoPorEquipoComputo(String descripcionEqui
 
     return servicio;
 }
+   
+   
+  
+   public static ResultadoOperacion guardarMantenimiento(int idEquipoComputo, String descripcionMantenimiento) throws SQLException {
+    ResultadoOperacion respuesta = new ResultadoOperacion();
 
+    Connection conexionBD = ConexionBaseDatos.abrirConexionBaseDatos();
+
+    respuesta.setError(true);
+    respuesta.setFilasAfectadas(-1);
+
+    try {
+        if (conexionBD != null) {
+            String consulta = "UPDATE servicio SET descripcionMantenimiento = ? WHERE idEquipoComputo = ?";
+
+            PreparedStatement prepararSentencia = conexionBD.prepareStatement(consulta);
+            prepararSentencia.setString(1, descripcionMantenimiento);
+            prepararSentencia.setInt(2, idEquipoComputo);
+            int filasAfectadas = prepararSentencia.executeUpdate();
+
+            if (filasAfectadas > 0) {
+                respuesta.setError(false);
+                respuesta.setFilasAfectadas(filasAfectadas);
+                System.out.println("Descripción del mantenimiento guardada exitosamente.");
+            } else {
+                System.out.println("Error al guardar la descripción del mantenimiento.");
+            }
+        } else {
+            System.out.println("Error al establecer la conexión con la base de datos.");
+        }
+    } catch (SQLException e) {
+        respuesta.setMensaje(e.getMessage());
+    } finally {
+        try {
+            if (conexionBD != null) {
+                conexionBD.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    return respuesta;
 }
 
-    
-    
+
+
+
+
+
+
+        }
+
+
+
+
     
     

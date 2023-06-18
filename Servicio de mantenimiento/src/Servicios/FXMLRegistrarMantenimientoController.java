@@ -1,14 +1,13 @@
 package Servicios;
 
-
 import Modelo.DAO.RefaccionDAO;
 import Modelo.DAO.ServicioDAO;
 import Modelo.DAO.TipoServicioDAO;
 import Modelo.POJO.Cliente;
 import Modelo.POJO.Refaccion;
+import Modelo.POJO.ResultadoOperacion;
 import Modelo.POJO.Servicio;
 import Modelo.POJO.TipoServicio;
-import java.io.IOException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -173,8 +172,6 @@ private void configurarTablaClienteEquipo() {
         }
     }
 }
-
-    
     
    private void configurarTablaRefaccion() {
        cbRefacciones.setItems(listaRefacciones);
@@ -208,11 +205,8 @@ private void cargarListaRefaccion() {
     } catch (SQLException ex) {
         ex.printStackTrace();
     }
-
     cbRefacciones.setItems(listaRefacciones);
-
 }
-
 
 @FXML
 private void guardarRefaccion(ActionEvent event) {
@@ -283,6 +277,13 @@ private void guardarRefaccion(ActionEvent event) {
         }
     }
 }
+
+
+
+
+
+
+
 @FXML
 private void eliminarRefaccion(ActionEvent event) {
     Refaccion refaccionSeleccionada = tvRefacciones.getSelectionModel().getSelectedItem();
@@ -291,10 +292,8 @@ private void eliminarRefaccion(ActionEvent event) {
         boolean confirmacion = mostrarConfirmacion("Eliminar refacción", "¿Estás seguro de eliminar la refacción seleccionada?");
         
         if (confirmacion) {
-            // Eliminar la refacción de la tabla
             tvRefacciones.getItems().remove(refaccionSeleccionada);
             
-            // Actualizar las unidades en el almacén
             Refaccion refaccionDAO = obtenerRefaccionDAO(refaccionSeleccionada);
             
             if (refaccionDAO != null) {
@@ -303,8 +302,7 @@ private void eliminarRefaccion(ActionEvent event) {
                 int unidadesActualizadas = unidadesAlmacenadas + unidadesEliminadas;
                 
                 refaccionDAO.setUnidades(unidadesActualizadas);
-                
-                // Mostrar mensaje con las unidades actualizadas
+        
                 String mensaje = "Unidades en el almacén después de eliminar: " + unidadesActualizadas;
                 mostrarInformacion("Unidades actualizadas", mensaje);
             }
@@ -362,17 +360,37 @@ private boolean mostrarConfirmacion(String titulo, String mensaje) {
 
 
 
-
 @FXML
-private void cancelar(ActionEvent event) {
-    // Obtener el nodo fuente del evento
-    Node sourceNode = (Node) event.getSource();
-    
-    // Obtener la ventana actual a partir del nodo fuente
-    Stage currentStage = (Stage) sourceNode.getScene().getWindow();
-    
-    // Cerrar la ventana actual
-    currentStage.close();
+private void guardarMantenimiento(ActionEvent event) {
+    Cliente clienteSeleccionado = tvClienteEquipo.getSelectionModel().getSelectedItem();
+
+    if (clienteSeleccionado != null) {
+        String descripcionMantenimiento = taDescripcionMantenimiento.getText();
+
+        // Check if all required fields are filled
+        if (descripcionMantenimiento.isEmpty()) {
+            mostrarAdvertencia("Campo incompleto", "Por favor, completa la descripción del mantenimiento antes de guardarlo.");
+            return;
+        }
+
+        try {
+            // Call the guardarMantenimiento method from ServicioDAO
+            ResultadoOperacion resultado = ServicioDAO.guardarMantenimiento(
+                    clienteSeleccionado.getIdEquipoComputo(),
+                    descripcionMantenimiento);
+
+            if (!resultado.isError()) {
+                // Show success message
+                mostrarInformacion("Mantenimiento guardado", "La descripción del mantenimiento se ha guardado exitosamente.");
+            } else {
+                mostrarAdvertencia("Error al guardar mantenimiento", "No se pudo guardar la descripción del mantenimiento en la base de datos.");
+            }
+        } catch (SQLException e) {
+            mostrarAdvertencia("Error de base de datos", "Ocurrió un error al acceder a la base de datos: " + e.getMessage());
+        }
+    } else {
+        mostrarAdvertencia("Selección de cliente", "Por favor, selecciona un cliente de la tabla.");
+    }
 }
 
 
@@ -380,6 +398,13 @@ private void cancelar(ActionEvent event) {
 
 
 
+@FXML
+private void cancelar(ActionEvent event) {
+    Node sourceNode = (Node) event.getSource();
+    
+    Stage currentStage = (Stage) sourceNode.getScene().getWindow();
+    currentStage.close();
+}
 
 }
 
