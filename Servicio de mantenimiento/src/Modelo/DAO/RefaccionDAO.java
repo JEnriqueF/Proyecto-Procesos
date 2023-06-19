@@ -97,6 +97,11 @@ public class RefaccionDAO {
         return seAgrego;
     }
     
+    
+    
+    
+  
+    
     public static ArrayList<Refaccion> verificarExistencia(int idRefaccion) throws SQLException{
         Connection conexionBD = ConexionBaseDatos.abrirConexionBaseDatos();
         ArrayList<Refaccion> refaccionesBD = null;
@@ -134,4 +139,22 @@ public class RefaccionDAO {
         }
         return refaccionesBD;
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }
