@@ -53,11 +53,7 @@ CREATE TABLE `equipocomputo` (
   `idEquipoComputo` int NOT NULL AUTO_INCREMENT,
   `descripcionEquipo` varchar(45) NOT NULL,
   PRIMARY KEY (`idEquipoComputo`)
-<<<<<<< Updated upstream
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-=======
-) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
->>>>>>> Stashed changes
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -134,8 +130,6 @@ DROP TABLE IF EXISTS `refaccionesenservicios`;
 CREATE TABLE `refaccionesenservicios` (
   `idServicio` int DEFAULT NULL,
   `idRefaccion` int DEFAULT NULL,
-  `unidadesUtilizadas` int DEFAULT NULL,
-  `refaccionRegistrada` tinyint(1) DEFAULT NULL,
   KEY `idServicio` (`idServicio`),
   KEY `idRefaccion` (`idRefaccion`),
   CONSTRAINT `refaccionesenservicios_ibfk_1` FOREIGN KEY (`idServicio`) REFERENCES `servicio` (`idServicio`),
@@ -176,11 +170,7 @@ CREATE TABLE `servicio` (
   CONSTRAINT `servicio_ibfk_1` FOREIGN KEY (`idTipoServicio`) REFERENCES `tiposervicio` (`idTipoServicio`),
   CONSTRAINT `servicio_ibfk_2` FOREIGN KEY (`idCliente`) REFERENCES `cliente` (`idCliente`),
   CONSTRAINT `servicio_ibfk_3` FOREIGN KEY (`idEquipoComputo`) REFERENCES `equipocomputo` (`idEquipoComputo`)
-<<<<<<< Updated upstream
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-=======
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
->>>>>>> Stashed changes
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -250,8 +240,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
-<<<<<<< Updated upstream
 -- Dump completed on 2023-05-26 13:03:13
-=======
--- Dump completed on 2023-06-19  0:00:54
->>>>>>> Stashed changes
