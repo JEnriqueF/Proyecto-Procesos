@@ -14,38 +14,66 @@ public class TipoServicioDAO {
     
    
     
-   public static TipoServicio obtenerTipoServicio(int idTipoServicio) throws SQLException {
-    Connection conexionBD = ConexionBaseDatos.abrirConexionBaseDatos();
-    TipoServicio tipoServicio = null;
+    public static TipoServicio obtenerTipoServicio(int idTipoServicio) throws SQLException {
+        Connection conexionBD = ConexionBaseDatos.abrirConexionBaseDatos();
+        TipoServicio tipoServicio = null;
 
-    if (conexionBD != null) {
-        try {
-            String consulta = "SELECT idTipoServicio, tipoServicio, cobroManoObra FROM tiposervicio WHERE idTipoServicio = ?";
-            PreparedStatement prepararSentencia = conexionBD.prepareStatement(consulta);
-            prepararSentencia.setInt(1, idTipoServicio);
-            ResultSet resultado = prepararSentencia.executeQuery();
-
-            if (resultado.next()) {
-                tipoServicio = new TipoServicio();
-                tipoServicio.setIdTipoServicio(resultado.getInt("idTipoServicio"));
-                tipoServicio.setTipoServicio(resultado.getString("tipoServicio"));
-                tipoServicio.setCobroManoObra(resultado.getDouble("cobroManoObra"));
+        if (conexionBD != null) {
+            try {
+                String consulta = "SELECT idTipoServicio, tipoServicio, cobroManoObra FROM tiposervicio WHERE idTipoServicio = ?";
+                PreparedStatement prepararSentencia = conexionBD.prepareStatement(consulta);
+                prepararSentencia.setInt(1, idTipoServicio);
+                ResultSet resultado = prepararSentencia.executeQuery();
+    
+                if (resultado.next()) {
+                    tipoServicio = new TipoServicio();
+                    tipoServicio.setIdTipoServicio(resultado.getInt("idTipoServicio"));
+                    tipoServicio.setTipoServicio(resultado.getString("tipoServicio"));
+                    tipoServicio.setCobroManoObra(resultado.getDouble("cobroManoObra"));
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                conexionBD.close();
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            conexionBD.close();
+        } else {
+            Utilidades.mostrarAlertaSimple("Error", "Falló la conexión con la base de datos.\nInténtelo más tarde", 
+                Alert.AlertType.ERROR);
         }
-    } else {
-        Utilidades.mostrarAlertaSimple("Error", "Falló la conexión con la base de datos.\nInténtelo más tarde", 
-            Alert.AlertType.ERROR);
+
+        return tipoServicio;
     }
 
-    return tipoServicio;
-}
+    public static ArrayList<TipoServicio> obtenerTipoServicio() throws SQLException {
+        ArrayList<TipoServicio> usuariosBD = null;
+        Connection conexionBD = ConexionBaseDatos.abrirConexionBaseDatos();
 
-    public static ArrayList<TipoServicio> obtenerTipoServicio() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if(conexionBD != null){
+            try{
+                String consulta = "SELECT idTipoServicio, tipoServicio, cobroManoObra FROM tiposervicio "
+                        + "WHERE idTipoServicio > 1";
+
+                PreparedStatement consultaUsuario = conexionBD.prepareStatement(consulta);
+                ResultSet resultadoConsulta = consultaUsuario.executeQuery();
+                usuariosBD = new ArrayList<>();
+
+                while(resultadoConsulta.next()){
+                    TipoServicio temp = new TipoServicio();
+                    temp.setIdTipoServicio(resultadoConsulta.getInt("idTipoServicio"));
+                    temp.setTipoServicio(resultadoConsulta.getString("tipoServicio"));
+                    temp.setCobroManoObra(resultadoConsulta.getDouble("cobroManoObra"));
+                    usuariosBD.add(temp);
+                }
+            }catch(SQLException e){
+                e.printStackTrace();
+            }finally{
+                conexionBD.close();
+            }
+        }else{
+            Utilidades.mostrarAlertaSimple("Error", "Falló la conexión con la base de datos.\nInténtelo más tarde", 
+                    Alert.AlertType.ERROR);
+        }
+        return usuariosBD;
     }
 
   

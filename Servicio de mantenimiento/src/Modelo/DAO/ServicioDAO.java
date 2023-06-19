@@ -74,17 +74,16 @@ public class ServicioDAO {
         return descripcionEquipo;
     }
 
-    public static Servicio obtenerServicioPorEquipoComputo(String descripcionEquipo) throws SQLException {
+    public static Servicio obtenerServicioPorEquipoComputo(int idEquipoComputo) throws SQLException {
         Servicio servicio = null;
-        String consulta = "SELECT s.descripcionDiagnostico, s.idTipoServicio " +
-                          "FROM servicio s " +
+        String consulta = "SELECT s.descripcionDiagnostico, s.idTipoServicio FROM servicio s " +
                           "JOIN equipocomputo e ON s.idEquipoComputo = e.idEquipoComputo " +
-                          "WHERE e.descripcionEquipo = ?";
+                          "WHERE e.idEquipoComputo = ?";
 
         try (Connection conexionBD = ConexionBaseDatos.abrirConexionBaseDatos();
              PreparedStatement consultaServicio = conexionBD.prepareStatement(consulta)) {
 
-            consultaServicio.setString(1, descripcionEquipo);
+            consultaServicio.setInt(1, idEquipoComputo);
             ResultSet resultadoConsulta = consultaServicio.executeQuery();
 
             if (resultadoConsulta.next()) {
@@ -107,8 +106,10 @@ public class ServicioDAO {
 
     if (conexionBD != null) {
         try {
-            String consulta = "SELECT cliente.idCliente, cliente.nombre, cliente.numTelefono, cliente.correo, equipocomputo.idEquipoComputo FROM cliente " +
-"	JOIN servicio ON cliente.idCliente = servicio.idCliente JOIN equipocomputo ON servicio.idEquipoComputo = equipocomputo.idEquipoComputo;";
+            String consulta = "SELECT cliente.idCliente, cliente.nombre, cliente.numTelefono, cliente.correo, "
+                    + "equipocomputo.idEquipoComputo FROM cliente JOIN servicio ON cliente.idCliente = servicio.idCliente "
+                    + "JOIN equipocomputo ON servicio.idEquipoComputo = equipocomputo.idEquipoComputo "
+                    + "WHERE servicio.estadoServicio = 'Activo' ";
 
             PreparedStatement consultaClientes = conexionBD.prepareStatement(consulta);
             ResultSet resultadoConsulta = consultaClientes.executeQuery();
@@ -138,17 +139,17 @@ public class ServicioDAO {
 
  
     
-public static Servicio obtenerDiagnosticoPorEquipoComputo(String descripcionEquipo) throws SQLException {
+public static Servicio obtenerDiagnosticoPorEquipoComputo(int idEquipoComputo) throws SQLException {
     Servicio servicio = null;
     String consulta = "SELECT s.descripcionDiagnostico " +
                       "FROM servicio s " +
                       "JOIN equipocomputo e ON s.idEquipoComputo = e.idEquipoComputo " +
-                      "WHERE e.descripcionEquipo = ?";
+                      "WHERE e.idEquipoComputo = ?";
 
     try (Connection conexionBD = ConexionBaseDatos.abrirConexionBaseDatos();
          PreparedStatement consultaDiagnostico = conexionBD.prepareStatement(consulta)) {
 
-        consultaDiagnostico.setString(1, descripcionEquipo);
+        consultaDiagnostico.setInt(1, idEquipoComputo);
         ResultSet resultadoConsulta = consultaDiagnostico.executeQuery();
 
         if (resultadoConsulta.next()) {
@@ -200,9 +201,310 @@ public static Servicio obtenerDiagnosticoPorEquipoComputo(String descripcionEqui
     return servicio;
 }
 
+   public static ResultadoOperacion obtenerRefaccionesServicio(int idServicio, int idRefaccion, int unidades) throws SQLException {
+    ResultadoOperacion resultadoOperacion = new ResultadoOperacion();
+    Connection conexionBD = ConexionBaseDatos.abrirConexionBaseDatos();
+
+    if (conexionBD != null) {
+        try {
+            String consulta = "INSERT INTO refaccionesenservicios VALUES (?, ?, ?, TRUE);";
+            PreparedStatement prepararSentencia = conexionBD.prepareStatement(consulta);
+            prepararSentencia.setInt(1,idServicio);
+            prepararSentencia.setInt(2,idRefaccion);
+            prepararSentencia.setInt(3,unidades);
+
+           int resultado = prepararSentencia.executeUpdate();
+             /*("Resultado",""+resultado);*/
+            if (resultado>0) {
+              resultadoOperacion.setError(false);
+              resultadoOperacion.setFilasAfectadas(resultado);
+            }
+        } catch (SQLException e) {
+           resultadoOperacion.setMensaje(e.getMessage());
+        } finally {
+            try {
+                conexionBD.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    } else {
+           resultadoOperacion.setMensaje("No hay conexión con la base de datos.");
+
+    }
+    return resultadoOperacion;
 }
 
+
+
+   public static Servicio obtenerIdServicio(int idEquipoComputo) throws SQLException {
+    Servicio servicio = null;
+    Connection conexionBD = ConexionBaseDatos.abrirConexionBaseDatos();
+
+    if (conexionBD != null) {
+        try {
+            String consulta = "SELECT * FROM servicio " +
+                              "JOIN equipocomputo ON equipocomputo.idEquipoComputo = servicio.idEquipoComputo " +
+                              "WHERE equipocomputo.idEquipoComputo = ?";
+            PreparedStatement prepararSentencia = conexionBD.prepareStatement(consulta);
+            prepararSentencia.setInt(1, idEquipoComputo);
+
+            ResultSet resultado = prepararSentencia.executeQuery();
+
+            if (resultado.next()) {
+                int idServicio = resultado.getInt("idServicio");
+                servicio = new Servicio();
+                servicio.setIdServicio(idServicio);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                conexionBD.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    } else {
+
+    }
+    return servicio;
+}
+
+
+   public static ResultadoOperacion ServicioRefaccion(int idServicio, int idRefaccion) {
+    ResultadoOperacion respuesta = new ResultadoOperacion();
+    Connection conexionBD = ConexionBaseDatos.abrirConexionBaseDatos();
+
+    respuesta.setError(true);
+    respuesta.setFilasAfectadas(-1);
+
+    try {
+        if (conexionBD != null) {
+            String consulta = "SELECT refaccionRegistrada FROM refaccionesenservicios WHERE idServicio = ? and idRefaccion = ?";
+
+            PreparedStatement prepararSentencia = conexionBD.prepareStatement(consulta);
+            prepararSentencia.setInt(1, idServicio);
+            prepararSentencia.setInt(2, idRefaccion);
+
+             int resultado = prepararSentencia.executeUpdate();
+
+            if (resultado>0) {
+              respuesta.setError(false);
+              respuesta.setFilasAfectadas(resultado);
+            }
+            else{
+                respuesta.setError(true);
+            }
+        }
+    } catch (SQLException e) {
+        respuesta.setMensaje(e.getMessage());
+        respuesta.setError(true);
+    } finally {
+        try {
+            if (conexionBD != null) {
+                conexionBD.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    return respuesta;
+}
+
+
+     public static ResultadoOperacion RefaccionUpdate(int idServicio, int idRefaccion, int unidades) {
+    ResultadoOperacion respuesta = new ResultadoOperacion();
+    Connection conexionBD = ConexionBaseDatos.abrirConexionBaseDatos();
+
+    respuesta.setError(true);
+    respuesta.setFilasAfectadas(-1);
+
+    try {
+        if (conexionBD != null) {
+            String consulta = "UPDATE refaccionesenservicios SET unidades = ? WHERE idServicio = ? AND idRefaccion = ?;";
+
+            PreparedStatement prepararSentencia = conexionBD.prepareStatement(consulta);
+            prepararSentencia.setInt(1, unidades);
+            prepararSentencia.setInt(2, idServicio);
+            prepararSentencia.setInt(3, idRefaccion);
+
+             int resultado = prepararSentencia.executeUpdate();
+
+            if (resultado>0) {
+              respuesta.setError(false);
+              respuesta.setFilasAfectadas(resultado);
+            }
+            else{
+                respuesta.setError(true);
+            }
+        }
+    } catch (SQLException e) {
+        respuesta.setMensaje(e.getMessage());
+        respuesta.setError(true);
+    } finally {
+        try {
+            if (conexionBD != null) {
+                conexionBD.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    return respuesta;
+}
+
+       public static String obtenerDescripcionMantenimiento(int idEquipoComputo) throws SQLException {
+    String descripcionMantenimiento = null;
+
+    Connection conexionBD = ConexionBaseDatos.abrirConexionBaseDatos();
+
+    try {
+        if (conexionBD != null) {
+            String consulta = "SELECT descripcionMantenimiento FROM servicio WHERE idEquipoComputo = ?";
+            PreparedStatement prepararSentencia = conexionBD.prepareStatement(consulta);
+            prepararSentencia.setInt(1, idEquipoComputo);
+
+            ResultSet resultado = prepararSentencia.executeQuery();
+
+            if (resultado.next()) {
+                descripcionMantenimiento = resultado.getString("descripcionMantenimiento");
+            }
+        } else {
+            System.out.println("Error al establecer la conexión con la base de datos.");
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    } finally {
+        try {
+            if (conexionBD != null) {
+                conexionBD.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    return descripcionMantenimiento;
+}
+
+    public static ResultadoOperacion eliminarRefaccion(int idServicio, int idRefaccion) throws SQLException {
+    ResultadoOperacion respuesta = new ResultadoOperacion();
+
+    Connection conexionBD = ConexionBaseDatos.abrirConexionBaseDatos();
+
+    respuesta.setError(true);
+    respuesta.setFilasAfectadas(-1);
+
+    try {
+        if (conexionBD != null) {
+            String consulta = "DELETE FROM refaccionesenservicios WHERE idServicio = ? AND idRefaccion = ?";
+
+            PreparedStatement prepararSentencia = conexionBD.prepareStatement(consulta);
+            prepararSentencia.setInt(1, idServicio);
+            prepararSentencia.setInt(2, idRefaccion);
+            int filasAfectadas = prepararSentencia.executeUpdate();
+
+            if (filasAfectadas > 0) {
+                respuesta.setError(false);
+                respuesta.setFilasAfectadas(filasAfectadas);
+                System.out.println("Refacción eliminada exitosamente.");
+            } else {
+                System.out.println("Error al eliminar la refacción.");
+            }
+        } else {
+            System.out.println("Error al establecer la conexión con la base de datos.");
+        }
+    } catch (SQLException e) {
+        respuesta.setMensaje(e.getMessage());
+    } finally {
+        try {
+            if (conexionBD != null) {
+                conexionBD.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    return respuesta;
+}
+    
+    public static ResultadoOperacion guardarMantenimiento(int idEquipoComputo, String descripcionMantenimiento) throws SQLException {
+    ResultadoOperacion respuesta = new ResultadoOperacion();
+    Connection conexionBD = ConexionBaseDatos.abrirConexionBaseDatos();
+    respuesta.setError(true);
+    respuesta.setFilasAfectadas(-1);
+    try {
+        if (conexionBD != null) {
+            String consulta = "UPDATE servicio SET descripcionMantenimiento = ? WHERE idEquipoComputo = ?";
+            PreparedStatement prepararSentencia = conexionBD.prepareStatement(consulta);
+            prepararSentencia.setString(1, descripcionMantenimiento);
+            prepararSentencia.setInt(2, idEquipoComputo);
+            int filasAfectadas = prepararSentencia.executeUpdate();
+            if (filasAfectadas > 0) {
+                respuesta.setError(false);
+                respuesta.setFilasAfectadas(filasAfectadas);
+                System.out.println("Descripción del mantenimiento guardada exitosamente.");
+            } else {
+                System.out.println("Error al guardar la descripción del mantenimiento.");
+            }
+        } else {
+            System.out.println("Error al establecer la conexión con la base de datos.");
+        }
+    } catch (SQLException e) {
+        respuesta.setMensaje(e.getMessage());
+    } finally {
+        try {
+            if (conexionBD != null) {
+                conexionBD.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    return respuesta;
+}
+    
+    public static ResultadoOperacion actualizarEstadoServicio(int idEquipoComputo, String estadoServicio) throws SQLException {
+    ResultadoOperacion respuesta = new ResultadoOperacion();
+    Connection conexionBD = ConexionBaseDatos.abrirConexionBaseDatos();
+
+    respuesta.setError(true);
+    respuesta.setFilasAfectadas(-1);
+
+    try {
+        if (conexionBD != null) {
+            String consulta = "UPDATE servicio SET estadoServicio = ? WHERE idEquipoComputo = ?";
+
+            PreparedStatement prepararSentencia = conexionBD.prepareStatement(consulta);
+            prepararSentencia.setString(1, estadoServicio);
+            prepararSentencia.setInt(2, idEquipoComputo);
+
+            int resultado = prepararSentencia.executeUpdate();
+            if (resultado > 0) {
+                respuesta.setError(false);
+                respuesta.setFilasAfectadas(resultado);
+            } else {
+                respuesta.setError(true);
+            }
+        }
+    } catch (SQLException e) {
+        respuesta.setMensaje(e.getMessage());
+        respuesta.setError(true);
+    } finally {
+        try {
+            if (conexionBD != null) {
+                conexionBD.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    return respuesta;
+}
     
     
-    
-    
+}

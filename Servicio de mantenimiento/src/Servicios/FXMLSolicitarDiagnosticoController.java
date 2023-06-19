@@ -116,11 +116,14 @@ public class FXMLSolicitarDiagnosticoController implements Initializable {
     }
     
     private void cargarListaTipoServicio(){
-        listaTipoServicios = FXCollections.observableArrayList();
-        ArrayList<TipoServicio> tipoServiciosBD = null;
-        tipoServiciosBD = TipoServicioDAO.obtenerTipoServicio();
-        listaTipoServicios.addAll(tipoServiciosBD);
-        cbTipoServicioSugerido.setItems(listaTipoServicios);
+        try {
+            listaTipoServicios = FXCollections.observableArrayList();
+            ArrayList<TipoServicio> tipoServiciosBD = TipoServicioDAO.obtenerTipoServicio();
+            listaTipoServicios.addAll(tipoServiciosBD);
+            cbTipoServicioSugerido.setItems(listaTipoServicios);
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
     }
     
     private void actualizarTotal(String cotizacionStr, TipoServicio tipoServicio, TextField tfTotal) {

@@ -1,11 +1,21 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package Modelo.DAO;
 
 import Modelo.POJO.Cliente;
+import org.junit.Test;
+import static org.junit.Assert.*;
 import Modelo.POJO.ResultadoOperacion;
 import java.util.ArrayList;
-import static org.junit.Assert.assertEquals;
-import org.junit.Test;
 
+
+/**
+ *
+ * @author LENOVO
+ */
 public class ClienteDAOTest {
     
     public ClienteDAOTest() {
@@ -29,6 +39,13 @@ public class ClienteDAOTest {
         c2.setNumTelefono("2281532121");
         c2.setCorreo("zs19014030@estudiantes.uv.mx");
         clientesEsperados.add(c2);
+        
+        Cliente c3 = new Cliente();
+        c2.setIdCliente(13);
+        c2.setNombre("Froylan de Jesús Álvarez Rodríguez");
+        c2.setNumTelefono("2281987654");
+        c2.setCorreo("zs20016554@estudiantes.uv.mx");
+        clientesEsperados.add(c3);
         
         ArrayList<Cliente> resultado = ClienteDAO.obtenerClientes();
         assertEquals(clientesEsperados.size(), resultado.size());
@@ -54,4 +71,14 @@ public class ClienteDAOTest {
         ResultadoOperacion result = ClienteDAO.registrarCliente(cliente);
         assertEquals(resultadoOperacion.isError(), result.isError());
     }
+
+//    @Test
+//    public void testObtenerClientesConEquipo() throws Exception {
+//        System.out.println("obtenerClientesConEquipo");
+//        ArrayList<Cliente> expResult = null;
+//        ArrayList<Cliente> result = ClienteDAO.obtenerClientesConEquipo();
+//        assertEquals(expResult, result);
+//        fail("The test case is a prototype.");
+//    }
+    
 }

@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package Modelo.DAO;
 
 import Modelo.POJO.TipoServicio;
@@ -5,9 +10,22 @@ import java.util.ArrayList;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+/**
+ *
+ * @author LENOVO
+ */
 public class TipoServicioDAOTest {
     
     public TipoServicioDAOTest() {
+    }
+
+    @Test
+    public void testObtenerTipoServicio_int() throws Exception {
+        System.out.println("obtenerTipoServicio");
+        int idTipoServicio = 0;
+        TipoServicio expResult = null;
+        TipoServicio result = TipoServicioDAO.obtenerTipoServicio(idTipoServicio);
+        assertEquals(expResult, result);
     }
 
     @Test
@@ -32,4 +50,5 @@ public class TipoServicioDAOTest {
             assertEquals(tipoServicioEsperado.getTipoServicio(), tipoServicioObtenido.getTipoServicio());
         }
     }
+    
 }

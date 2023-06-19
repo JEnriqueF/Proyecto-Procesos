@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -95,5 +96,80 @@ public class RefaccionDAO {
         }
         
         return seAgrego;
+    }
+    
+    public static ArrayList<Refaccion> verificarExistencia(int idRefaccion) throws SQLException{
+        Connection conexionBD = ConexionBaseDatos.abrirConexionBaseDatos();
+        ArrayList<Refaccion> refaccionesBD = null;
+        
+        boolean existe = false;
+        
+        if(conexionBD != null){
+            try{
+                String consulta = "SELECT refaccion.nombreRefaccion, refaccion.unidades FROM refaccion "
+                        + "WHERE refaccion.idRefaccion = ?";
+                
+                PreparedStatement prepararSentencia = conexionBD.prepareStatement(consulta);
+                prepararSentencia.setInt(1, idRefaccion);
+                ResultSet resultado = prepararSentencia.executeQuery();
+                
+                while(resultado.next()){
+                    Refaccion refaccionTemporal = new Refaccion();
+                    
+                    refaccionTemporal.setNombreRefaccion(resultado.getString("nombreRefaccion"));
+                    
+                    refaccionTemporal.setUnidades(resultado.getInt("unidades"));
+                    
+                    refaccionesBD.add(refaccionTemporal);
+                }
+            }catch(SQLException | NullPointerException e){
+                e.printStackTrace();
+            }finally{
+                conexionBD.close();
+            }
+        }
+        return refaccionesBD;
+    }
+    
+    public static List<Refaccion> mostrarRefaccionesServicio(int idEquipoComputo) throws SQLException {
+        List<Refaccion> refacciones = new ArrayList<>();
+        Connection conexionBD = ConexionBaseDatos.abrirConexionBaseDatos();
+
+        if (conexionBD != null) {
+            try {
+                String consulta = "SELECT r.idRefaccion, r.nombreRefaccion, rs.unidadesUtilizadas FROM refaccion r " +
+                  "INNER JOIN refaccionesenservicios rs ON r.idRefaccion = rs.idRefaccion " +
+                  "INNER JOIN servicio s ON rs.idServicio = s.idServicio " +
+                  "INNER JOIN equipocomputo ec ON s.idEquipoComputo = ec.idEquipoComputo " +
+                  "WHERE ec.idEquipoComputo = ?";
+
+                PreparedStatement prepararSentencia = conexionBD.prepareStatement(consulta);
+                prepararSentencia.setInt(1, idEquipoComputo);
+                ResultSet resultado = prepararSentencia.executeQuery();
+
+                while (resultado.next()) {
+                    int idRefaccion = resultado.getInt("idRefaccion");
+                    String nombreRefaccion = resultado.getString("nombreRefaccion");
+                    int unidadesUtilizadas = resultado.getInt("unidadesUtilizadas");
+
+                    Refaccion refaccion = new Refaccion();
+                    refaccion.setIdRefaccion(idRefaccion);
+                    refaccion.setNombreRefaccion(nombreRefaccion);
+                    refaccion.setUnidades(unidadesUtilizadas);
+
+                    refacciones.add(refaccion);
+                }
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    conexionBD.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return refacciones;
     }
 }
