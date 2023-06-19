@@ -23,7 +23,7 @@ public class RefaccionDAOTest {
     @Test
     public void testObtenerRefacciones() throws Exception {
         System.out.println("obtenerRefacciones");
-        ArrayList<Refaccion> expResult = null;
+        ArrayList<Refaccion> expResult = new ArrayList();
         ArrayList<Refaccion> result = RefaccionDAO.obtenerRefacciones();
         assertEquals(expResult, result);
     }
@@ -31,8 +31,12 @@ public class RefaccionDAOTest {
     @Test
     public void testRegistrarRefaccion() throws Exception {
         System.out.println("registrarRefaccion");
-        Refaccion refaccionNueva = null;
-        boolean expResult = false;
+        Refaccion refaccionNueva = new Refaccion();
+        refaccionNueva.setNombreRefaccion("Test");
+        refaccionNueva.setPrecioCosto(1);
+        refaccionNueva.setUnidades(1);
+        refaccionNueva.setProveedor("Testers");
+        boolean expResult = true;
         boolean result = RefaccionDAO.registrarRefaccion(refaccionNueva);
         assertEquals(expResult, result);
     }
@@ -40,9 +44,9 @@ public class RefaccionDAOTest {
     @Test
     public void testAgregarUnidades() throws Exception {
         System.out.println("agregarUnidades");
-        int unidadesNuevas = 0;
-        int idRefaccion = 0;
-        boolean expResult = false;
+        int unidadesNuevas = 10;
+        int idRefaccion = 7;
+        boolean expResult = true;
         boolean result = RefaccionDAO.agregarUnidades(unidadesNuevas, idRefaccion);
         assertEquals(expResult, result);
     }
